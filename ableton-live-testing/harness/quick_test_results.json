@@ -1,0 +1,51 @@
+[
+  [
+    {
+      "endpoint": "/api/get_session_info",
+      "method": "GET",
+      "status_code": 200,
+      "response": {
+        "session": "Mock Session Info",
+        "status": "ok"
+      },
+      "success": true
+    },
+    {
+      "endpoint": "/api/create_midi_track",
+      "method": "POST",
+      "status_code": 200,
+      "response": {
+        "result": "Mock MIDI track created at index -1",
+        "status": "ok"
+      },
+      "success": true
+    },
+    {
+      "endpoint": "/api/set_tempo",
+      "method": "POST",
+      "status_code": 200,
+      "response": {
+        "result": "Mock tempo set to 120 BPM",
+        "status": "ok"
+      },
+      "success": true
+    }
+  ],
+  {
+    "test": "patch_validation",
+    "status": "success",
+    "patch_file": "C:\\Users\\CraftAuto-Sales\\OneDrive\\Documents\\ALSE\\ableton-live-testing\\tests\\patches\\test_oscillator_device.json",
+    "validation_results": [
+      "\u2713 patcher field present",
+      "\u2713 patcher.boxes present",
+      "\u2713 patcher.lines present",
+      "\u2713 Found 5 objects",
+      "\u2713 Found 5 connections"
+    ]
+  },
+  {
+    "test": "ide_responsiveness",
+    "status": "skipped",
+    "reason": "IDE not running"
+  }
+]

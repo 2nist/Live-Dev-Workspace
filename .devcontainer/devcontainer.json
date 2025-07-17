@@ -1,0 +1,105 @@
+{
+  "name": "ALSE - Ableton Live Software Environment",
+  "description": "Complete development environment for Ableton Live integration with Max Live IDE",
+  "image": "mcr.microsoft.com/vscode/devcontainers/typescript-node:18",
+  
+  "features": {
+    "ghcr.io/devcontainers/features/python:1": {
+      "version": "3.11",
+      "installTools": true
+    },
+    "ghcr.io/devcontainers/features/git:1": {
+      "version": "latest"
+    },
+    "ghcr.io/devcontainers/features/github-cli:1": {
+      "version": "latest"
+    }
+  },
+  
+  "containerEnv": {
+    "NODE_ENV": "development",
+    "PYTHONPATH": "/workspaces/ALSE",
+    "LATE_DEBUG": "1"
+  },
+  
+  "forwardPorts": [3000, 9001, 9877, 5000],
+  
+  "portsAttributes": {
+    "3000": {
+      "label": "Max Live IDE",
+      "onAutoForward": "openBrowserOnce",
+      "visibility": "public",
+      "protocol": "https"
+    },
+    "9001": {
+      "label": "WebSocket API (Live Communication)",
+      "onAutoForward": "silent", 
+      "visibility": "public",
+      "protocol": "wss"
+    },
+    "9877": {
+      "label": "HTTP API (Commands & Queries)",
+      "onAutoForward": "silent",
+      "visibility": "public", 
+      "protocol": "https"
+    },
+    "5000": {
+      "label": "LATE Mock Server",
+      "onAutoForward": "silent",
+      "visibility": "private"
+    }
+  },
+  
+  "postCreateCommand": ".devcontainer/setup.sh",
+  
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-vscode.vscode-typescript-next",
+        "bradlc.vscode-tailwindcss",
+        "ms-python.python",
+        "ms-python.flake8",
+        "ms-python.black-formatter",
+        "GitHub.copilot",
+        "GitHub.copilot-chat",
+        "ms-vscode.live-server",
+        "formulahendry.auto-rename-tag",
+        "esbenp.prettier-vscode",
+        "ms-vscode.vscode-json",
+        "redhat.vscode-yaml"
+      ],
+      "settings": {
+        "terminal.integrated.defaultProfile.linux": "bash",
+        "editor.formatOnSave": true,
+        "editor.defaultFormatter": "esbenp.prettier-vscode",
+        "python.defaultInterpreterPath": "/usr/local/bin/python",
+        "python.formatting.provider": "black",
+        "python.linting.enabled": true,
+        "python.linting.flake8Enabled": true,
+        "typescript.preferences.includePackageJsonAutoImports": "auto",
+        "javascript.preferences.includePackageJsonAutoImports": "auto",
+        "workbench.colorTheme": "Default Dark+",
+        "workbench.startupEditor": "welcomePage",
+        "files.autoSave": "afterDelay",
+        "files.autoSaveDelay": 1000,
+        "terminal.integrated.fontSize": 14,
+        "editor.fontSize": 14,
+        "editor.wordWrap": "on",
+        "editor.minimap.enabled": true,
+        "explorer.confirmDelete": false,
+        "git.autofetch": true,
+        "git.enableSmartCommit": true
+      }
+    }
+  },
+  
+  "mounts": [
+    "source=${localWorkspaceFolder}/.devcontainer/cache,target=/usr/local/share/.cache,type=bind,consistency=cached"
+  ],
+  
+  "remoteUser": "node",
+  
+  "updateRemoteUserUID": true,
+  
+  "shutdownAction": "stopContainer"
+}

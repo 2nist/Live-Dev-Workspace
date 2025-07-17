@@ -1,0 +1,104 @@
+{
+  "name": "Test Oscillator Device",
+  "description": "Simple oscillator with gain control for testing IDE integration",
+  "patcher": {
+    "fileversion": 1,
+    "appversion": {"major": 8, "minor": 5, "revision": 6},
+    "rect": [34.0, 87.0, 634.0, 387.0],
+    "bglocked": 0,
+    "openinpresentation": 1,
+    "default_fontsize": 12.0,
+    "default_fontface": 0,
+    "default_fontname": "Arial",
+    "boxes": [
+      {
+        "box": {
+          "id": "1",
+          "maxclass": "live.dial",
+          "varname": "frequency",
+          "text": "Freq",
+          "patching_rect": [50.0, 50.0, 44.0, 48.0],
+          "presentation_rect": [20.0, 20.0, 44.0, 48.0],
+          "parameter_enable": 1,
+          "numinlets": 1,
+          "numoutlets": 2
+        }
+      },
+      {
+        "box": {
+          "id": "2",
+          "maxclass": "live.dial",
+          "varname": "gain",
+          "text": "Gain",
+          "patching_rect": [150.0, 50.0, 44.0, 48.0],
+          "presentation_rect": [80.0, 20.0, 44.0, 48.0],
+          "parameter_enable": 1,
+          "numinlets": 1,
+          "numoutlets": 2
+        }
+      },
+      {
+        "box": {
+          "id": "3",
+          "maxclass": "newobj",
+          "text": "osc~ 440",
+          "patching_rect": [50.0, 120.0, 60.0, 22.0],
+          "numinlets": 2,
+          "numoutlets": 1
+        }
+      },
+      {
+        "box": {
+          "id": "4",
+          "maxclass": "newobj",
+          "text": "*~ 0.5",
+          "patching_rect": [50.0, 170.0, 42.0, 22.0],
+          "numinlets": 2,
+          "numoutlets": 1
+        }
+      },
+      {
+        "box": {
+          "id": "5",
+          "maxclass": "newobj",
+          "text": "plugout~ 1 2",
+          "patching_rect": [50.0, 220.0, 72.0, 22.0],
+          "numinlets": 2,
+          "numoutlets": 0
+        }
+      }
+    ],
+    "lines": [
+      {
+        "patchline": {
+          "source": ["1", 0],
+          "destination": ["3", 0]
+        }
+      },
+      {
+        "patchline": {
+          "source": ["2", 0],
+          "destination": ["4", 1]
+        }
+      },
+      {
+        "patchline": {
+          "source": ["3", 0],
+          "destination": ["4", 0]
+        }
+      },
+      {
+        "patchline": {
+          "source": ["4", 0],
+          "destination": ["5", 0]
+        }
+      },
+      {
+        "patchline": {
+          "source": ["4", 0],
+          "destination": ["5", 1]
+        }
+      }
+    ]
+  }
+}

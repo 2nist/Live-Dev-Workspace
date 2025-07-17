@@ -1,0 +1,268 @@
+.test-app {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background: #1a1a1a;
+  color: #fff;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Test Control Panel */
+.test-panel {
+  background: #2a2a2a;
+  border-bottom: 1px solid #444;
+  padding: 16px;
+  max-height: 40vh;
+  overflow-y: auto;
+}
+
+.test-panel h2 {
+  margin: 0 0 16px 0;
+  color: #007acc;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.test-controls {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+
+.test-btn {
+  background: #444;
+  border: 1px solid #666;
+  color: #fff;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.test-btn:hover {
+  background: #555;
+  border-color: #777;
+}
+
+.test-btn.primary {
+  background: #007acc;
+  border-color: #007acc;
+}
+
+.test-btn.primary:hover {
+  background: #0066aa;
+}
+
+.current-test {
+  background: rgba(0, 122, 204, 0.1);
+  border: 1px solid #007acc;
+  border-radius: 4px;
+  padding: 8px 12px;
+  margin-bottom: 16px;
+  font-size: 12px;
+  color: #4fc3f7;
+}
+
+/* Test Results */
+.test-results {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 16px;
+}
+
+.test-category {
+  background: #333;
+  border: 1px solid #444;
+  border-radius: 6px;
+  padding: 12px;
+}
+
+.test-category h3 {
+  margin: 0 0 8px 0;
+  color: #ccc;
+  font-size: 14px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.test-items {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.test-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 4px 0;
+  font-size: 11px;
+}
+
+.test-name {
+  color: #999;
+  font-weight: 500;
+}
+
+.test-result {
+  color: #fff;
+  font-family: monospace;
+}
+
+/* App Container */
+.app-container {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Status Bar */
+.status-bar {
+  background: #1a1a1a;
+  border-top: 1px solid #333;
+  padding: 8px 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 11px;
+  font-family: monospace;
+}
+
+.status-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #999;
+}
+
+.status-item span:first-child {
+  font-weight: 600;
+}
+
+.status-item span:last-child {
+  color: #ccc;
+}
+
+/* Connection Status Colors */
+.status-connected {
+  color: #10b981 !important;
+}
+
+.status-connecting {
+  color: #f59e0b !important;
+}
+
+.status-disconnected {
+  color: #6b7280 !important;
+}
+
+.status-error {
+  color: #ef4444 !important;
+}
+
+/* Mobile Optimizations */
+@media (max-width: 768px) {
+  .test-panel {
+    max-height: 50vh;
+    padding: 12px;
+  }
+
+  .test-controls {
+    flex-direction: column;
+  }
+
+  .test-btn {
+    width: 100%;
+  }
+
+  .test-results {
+    grid-template-columns: 1fr;
+  }
+
+  .status-bar {
+    flex-direction: column;
+    gap: 8px;
+    padding: 12px;
+  }
+
+  .status-item {
+    width: 100%;
+    justify-content: space-between;
+  }
+}
+
+/* Scrollbar Styling */
+.test-panel::-webkit-scrollbar {
+  width: 8px;
+}
+
+.test-panel::-webkit-scrollbar-track {
+  background: #1a1a1a;
+}
+
+.test-panel::-webkit-scrollbar-thumb {
+  background: #444;
+  border-radius: 4px;
+}
+
+.test-panel::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+/* Animation for Test Results */
+.test-item {
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Success/Error Indicators */
+.test-result:contains("✅") {
+  color: #10b981;
+}
+
+.test-result:contains("❌") {
+  color: #ef4444;
+}
+
+.test-result:contains("⚠️") {
+  color: #f59e0b;
+}
+
+/* Loading State */
+.test-panel.loading {
+  opacity: 0.7;
+  pointer-events: none;
+}
+
+.test-panel.loading::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 20px;
+  height: 20px;
+  margin: -10px 0 0 -10px;
+  border: 2px solid #007acc;
+  border-top: 2px solid transparent;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}

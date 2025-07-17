@@ -1,0 +1,270 @@
+.enhanced-toolbar {
+  background: #2a2a2a;
+  border-bottom: 1px solid #444;
+  padding: 8px 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 48px;
+  box-sizing: border-box;
+}
+
+.toolbar-left {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.toolbar-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.toolbar-title {
+  color: #007acc;
+  font-size: 16px;
+  font-weight: 600;
+  margin: 0;
+}
+
+.toolbar-section {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.toolbar-btn {
+  background: #444;
+  border: 1px solid #555;
+  color: #ccc;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.toolbar-btn:hover {
+  background: #555;
+  color: #fff;
+  border-color: #666;
+}
+
+.toolbar-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.toolbar-btn.primary {
+  background: #007acc;
+  border-color: #007acc;
+  color: white;
+}
+
+.toolbar-btn.primary:hover {
+  background: #0066aa;
+  border-color: #0066aa;
+}
+
+.toolbar-btn.secondary {
+  background: transparent;
+  border-color: #666;
+}
+
+.toolbar-btn.secondary:hover {
+  background: #444;
+}
+
+.toolbar-btn.danger {
+  background: #ef4444;
+  border-color: #ef4444;
+  color: white;
+}
+
+.toolbar-btn.danger:hover {
+  background: #dc2626;
+  border-color: #dc2626;
+}
+
+.toolbar-btn.active {
+  background: #007acc;
+  border-color: #007acc;
+  color: white;
+}
+
+.toolbar-dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background: #333;
+  border: 1px solid #444;
+  border-radius: 4px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  z-index: 1000;
+  min-width: 160px;
+  top: 100%;
+  right: 0;
+  margin-top: 4px;
+}
+
+.dropdown-content.show {
+  display: block;
+}
+
+.dropdown-item {
+  color: #ccc;
+  padding: 8px 12px;
+  text-decoration: none;
+  display: block;
+  font-size: 12px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.dropdown-item:hover {
+  background: #444;
+  color: #fff;
+}
+
+.dropdown-divider {
+  height: 1px;
+  background: #444;
+  margin: 4px 0;
+}
+
+.toolbar-input {
+  background: #333;
+  border: 1px solid #555;
+  color: #ccc;
+  padding: 4px 8px;
+  border-radius: 3px;
+  font-size: 12px;
+  width: 120px;
+  transition: all 0.2s ease;
+}
+
+.toolbar-input:focus {
+  outline: none;
+  border-color: #007acc;
+  background: #3a3a3a;
+  color: #fff;
+}
+
+.toolbar-input::placeholder {
+  color: #666;
+}
+
+.toolbar-separator {
+  width: 1px;
+  height: 24px;
+  background: #444;
+  margin: 0 8px;
+}
+
+.toolbar-badge {
+  background: #007acc;
+  color: white;
+  padding: 2px 6px;
+  border-radius: 10px;
+  font-size: 10px;
+  font-weight: bold;
+  min-width: 16px;
+  text-align: center;
+}
+
+.toolbar-badge.error {
+  background: #ef4444;
+}
+
+.toolbar-badge.warning {
+  background: #f59e0b;
+}
+
+.toolbar-badge.success {
+  background: #10b981;
+}
+
+.toolbar-icon {
+  font-size: 14px;
+  width: 14px;
+  height: 14px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.toolbar-status {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  color: #999;
+}
+
+.status-indicator {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+}
+
+.status-indicator.online {
+  background: #10b981;
+}
+
+.status-indicator.offline {
+  background: #6b7280;
+}
+
+.status-indicator.error {
+  background: #ef4444;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .enhanced-toolbar {
+    padding: 6px 12px;
+    height: 44px;
+  }
+  
+  .toolbar-left,
+  .toolbar-right {
+    gap: 8px;
+  }
+  
+  .toolbar-btn {
+    padding: 4px 8px;
+    font-size: 11px;
+  }
+  
+  .toolbar-input {
+    width: 80px;
+  }
+  
+  .toolbar-title {
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  .enhanced-toolbar {
+    flex-direction: column;
+    height: auto;
+    padding: 8px;
+    gap: 8px;
+  }
+  
+  .toolbar-left,
+  .toolbar-right {
+    width: 100%;
+    justify-content: space-between;
+  }
+}

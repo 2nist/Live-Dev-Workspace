@@ -1,0 +1,140 @@
+.enhanced-app {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background: #1a1a1a;
+  color: #ffffff;
+}
+
+.enhanced-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  background: #2a2a2a;
+  border-bottom: 1px solid #444;
+  z-index: 1000;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.header-left h1 {
+  margin: 0;
+  font-size: 18px;
+  color: #007acc;
+}
+
+.search-toggle {
+  padding: 8px 16px;
+  background: #007acc;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background 0.2s;
+}
+
+.search-toggle:hover {
+  background: #005a9e;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+}
+
+.enhanced-content {
+  display: flex;
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+}
+
+.flow-container {
+  flex: 1;
+  position: relative;
+}
+
+.enhanced-status-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 20px;
+  background: #2a2a2a;
+  border-top: 1px solid #444;
+  font-size: 12px;
+  color: #ccc;
+}
+
+.connection-status {
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-weight: bold;
+}
+
+.connection-status.connected {
+  background: #0d7f2c;
+  color: white;
+}
+
+.connection-status.disconnected {
+  background: #d32f2f;
+  color: white;
+}
+
+/* React Flow overrides for dark theme */
+.react-flow {
+  background: #1a1a1a;
+}
+
+.react-flow__node {
+  background: #2a2a2a;
+  border: 1px solid #444;
+  color: #ffffff;
+}
+
+.react-flow__node.selected {
+  border-color: #007acc;
+  box-shadow: 0 0 0 2px rgba(0, 122, 204, 0.3);
+}
+
+.react-flow__edge {
+  stroke: #666;
+}
+
+.react-flow__edge.selected {
+  stroke: #007acc;
+}
+
+.react-flow__controls {
+  background: #2a2a2a;
+  border: 1px solid #444;
+}
+
+.react-flow__controls button {
+  background: #2a2a2a;
+  border: 1px solid #444;
+  color: #ffffff;
+}
+
+.react-flow__controls button:hover {
+  background: #3a3a3a;
+}
+
+.react-flow__minimap {
+  background: #2a2a2a;
+  border: 1px solid #444;
+}
+
+.react-flow__background {
+  background: #1a1a1a;
+}
+
+.react-flow__background pattern {
+  stroke: #333;
+}

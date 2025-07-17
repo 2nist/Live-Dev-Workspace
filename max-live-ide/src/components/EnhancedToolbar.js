@@ -1,0 +1,165 @@
+import React, { useState, useCallback } from 'react';
+import './EnhancedToolbar.css';
+
+const EnhancedToolbar = ({
+  onSearch,
+  onDeviceManager,
+  onTestResults,
+  onZoomToFit,
+  onZoomToSelection,
+  selectedCount,
+  liveStatus
+}) => {
+  const [isRecording, setIsRecording] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(false);
+
+  const handlePlayPause = useCallback(() => {
+    setIsPlaying(!isPlaying);
+    // Implement play/pause logic
+  }, [isPlaying]);
+
+  const handleRecord = useCallback(() => {
+    setIsRecording(!isRecording);
+    // Implement record logic
+  }, [isRecording]);
+
+  return (
+    <div className="enhanced-toolbar">
+      {/* Left Section - File Operations */}
+      <div className="toolbar-section toolbar-left">
+        <div className="toolbar-group">
+          <button className="toolbar-button" title="New Patch (Ctrl+N)">
+            📄
+          </button>
+          <button className="toolbar-button" title="Open Patch (Ctrl+O)">
+            📂
+          </button>
+          <button className="toolbar-button" title="Save Patch (Ctrl+S)">
+            💾
+          </button>
+          <button className="toolbar-button" title="Export to Live">
+            📤
+          </button>
+        </div>
+        
+        <div className="toolbar-separator"></div>
+        
+        <div className="toolbar-group">
+          <button className="toolbar-button" title="Undo (Ctrl+Z)">
+            ↶
+          </button>
+          <button className="toolbar-button" title="Redo (Ctrl+Y)">
+            ↷
+          </button>
+        </div>
+      </div>
+      
+      {/* Center Section - Transport and View Controls */}
+      <div className="toolbar-section toolbar-center">
+        <div className="toolbar-group transport-controls">
+          <button 
+            className={`toolbar-button transport-button ${isRecording ? 'recording' : ''}`}
+            onClick={handleRecord}
+            title="Record"
+          >
+            ⏺
+          </button>
+          <button 
+            className={`toolbar-button transport-button ${isPlaying ? 'playing' : ''}`}
+            onClick={handlePlayPause}
+            title="Play/Pause"
+          >
+            {isPlaying ? '⏸' : '▶'}
+          </button>
+          <button className="toolbar-button transport-button" title="Stop">
+            ⏹
+          </button>
+        </div>
+        
+        <div className="toolbar-separator"></div>
+        
+        <div className="toolbar-group view-controls">
+          <button 
+            className="toolbar-button"
+            onClick={onZoomToFit}
+            title="Zoom to Fit (Ctrl+1)"
+          >
+            🔍📐
+          </button>
+          <button 
+            className="toolbar-button"
+            onClick={onZoomToSelection}
+            disabled={selectedCount === 0}
+            title={`Zoom to Selection (${selectedCount} selected) (Ctrl+2)`}
+          >
+            🎯
+          </button>
+          <button 
+            className="toolbar-button"
+            onClick={onSearch}
+            title="Search Objects (Ctrl+F)"
+          >
+            🔍
+          </button>
+        </div>
+      </div>
+      
+      {/* Right Section - Panel Toggles and Status */}
+      <div className="toolbar-section toolbar-right">
+        <div className="toolbar-group panel-toggles">
+          <button 
+            className="toolbar-button"
+            onClick={onDeviceManager}
+            title="Device Manager (Ctrl+D)"
+          >
+            🎛️
+          </button>
+          <button 
+            className="toolbar-button"
+            onClick={onTestResults}
+            title="Test Results (Ctrl+T)"
+          >
+            🧪
+          </button>
+          <button className="toolbar-button" title="Object Library">
+            📚
+          </button>
+          <button className="toolbar-button" title="Parameter Editor">
+            ⚙️
+          </button>
+        </div>
+        
+        <div className="toolbar-separator"></div>
+        
+        <div className="toolbar-group status-group">
+          <div className="live-connection-status">
+            <div className={`connection-indicator ${liveStatus.connected ? 'connected' : 'disconnected'}`}>
+              <div className="indicator-dot"></div>
+              <span className="indicator-text">
+                {liveStatus.connected ? 'Live Connected' : 'Live Disconnected'}
+              </span>
+            </div>
+            {liveStatus.connected && (
+              <div className="live-info">
+                <span className="live-tempo">♩ = {liveStatus.tempo || 120}</span>
+                <span className="live-time">{liveStatus.playPosition || '0.0.0'}</span>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+      
+      {/* Quick Stats Bar */}
+      <div className="quick-stats">
+        <span className="stat-item">Objects: {liveStatus.objectCount || 0}</span>
+        <span className="stat-item">CPU: {liveStatus.cpuUsage || 0}%</span>
+        <span className="stat-item">Latency: {liveStatus.latency || 0}ms</span>
+        {selectedCount > 0 && (
+          <span className="stat-item selected">Selected: {selectedCount}</span>
+        )}
+      </div>
+    </div>
+  );
+};
+
+export default EnhancedToolbar;

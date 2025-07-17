@@ -1,0 +1,9 @@
+[submodule "ableton-js"]
+	path = ableton-js
+	url = ./ableton-js
+[submodule "ableton-mcp-extended"]
+	path = ableton-mcp-extended
+	url = ./ableton-mcp-extended
+[submodule "ALSExportKit"]
+	path = ALSExportKit
+	url = ./ALSExportKit
