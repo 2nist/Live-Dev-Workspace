@@ -64,3 +64,6 @@ Thumbs.db
 # ableton-js/
 # ableton-mcp-extended/
 # ALSExportKit/
+
+# Large PDF documentation files (extract key content to .md files instead)
+DOCS/*.pdf
