@@ -1,11 +1,13 @@
 import React, { useState, useCallback } from 'react';
 import { ReactFlow, Background, Controls, MiniMap, useNodesState, useEdgesState, addEdge } from '@xyflow/react';
 import { Group, Button, Paper, Text, Badge, Title } from '@mantine/core';
-import { IconSearch, IconDevices, IconInfoCircle } from '@tabler/icons-react';
+import { IconSearch, IconDevices, IconInfoCircle, IconBook, IconTemplate } from '@tabler/icons-react';
 import { useCanvasNavigation, useDeviceSearch, useLiveStatus } from '../hooks';
+import { useObjectTemplateBrowser, useObjectBrowserShortcuts, useObjectInsertion } from '../hooks/useObjectTemplateBrowser';
 import SearchPanel from './SearchPanel';
 import LiveStatusPanel from './LiveStatusPanel';
 import DeviceManager from './DeviceManager';
+import ObjectTemplateBrowser from './ObjectTemplateBrowser';
 import '@xyflow/react/dist/style.css';
 import './EnhancedApp.css';
 
@@ -86,6 +88,13 @@ const EnhancedApp = ({ nodeTypes }) => {
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
 
+  // Object & Template Browser
+  const browserControls = useObjectTemplateBrowser();
+  const { insertObject, insertTemplate } = useObjectInsertion(setNodes, setEdges);
+  
+  // Setup keyboard shortcuts for browser
+  useObjectBrowserShortcuts(browserControls);
+
   // Use custom hooks
   const {
     viewport,
@@ -132,12 +141,41 @@ const EnhancedApp = ({ nodeTypes }) => {
     setIsSearchOpen(false);
   }, [setNodes]);
 
+  // Handle object and template selection from browser
+  const handleObjectSelect = useCallback((object) => {
+    const position = { 
+      x: viewport.x + 300, 
+      y: viewport.y + 200 
+    };
+    const newNode = insertObject(object, position);
+    browserControls.addToRecent(object);
+    browserControls.closeBrowser();
+    console.log('Added object:', object.name, 'at position:', position);
+  }, [insertObject, browserControls, viewport]);
+
+  const handleTemplateSelect = useCallback((template) => {
+    const position = { 
+      x: viewport.x + 200, 
+      y: viewport.y + 100 
+    };
+    const result = insertTemplate(template, position);
+    browserControls.addToRecent(template);
+    browserControls.closeBrowser();
+    console.log('Added template:', template.name, 'with', result?.nodes?.length, 'nodes');
+  }, [insertTemplate, browserControls, viewport]);
+
   const handleKeyDown = useCallback((event) => {
     if (event.ctrlKey || event.metaKey) {
       switch (event.key) {
         case 'f':
           event.preventDefault();
           setIsSearchOpen(true);
+          break;
+        case 'o':
+          if (event.shiftKey) {
+            event.preventDefault();
+            browserControls.openBrowser();
+          }
           break;
         case '=':
         case '+':
@@ -156,7 +194,16 @@ const EnhancedApp = ({ nodeTypes }) => {
           break;
       }
     }
-  }, [zoomIn, zoomOut, resetZoom]);
+    
+    if (event.key === 'Escape') {
+      if (isSearchOpen) {
+        setIsSearchOpen(false);
+      }
+      if (browserControls.isOpen) {
+        browserControls.closeBrowser();
+      }
+    }
+  }, [zoomIn, zoomOut, resetZoom, browserControls, isSearchOpen]);
 
   React.useEffect(() => {
     document.addEventListener('keydown', handleKeyDown);
@@ -177,6 +224,14 @@ const EnhancedApp = ({ nodeTypes }) => {
               size="sm"
             >
               Search Devices (Ctrl+F)
+            </Button>
+            <Button
+              variant="light"
+              leftSection={<IconBook size={16} />}
+              onClick={browserControls.openBrowser}
+              size="sm"
+            >
+              Object Browser (Ctrl+Shift+O)
             </Button>
           </Group>
           <LiveStatusPanel 
@@ -227,6 +282,14 @@ const EnhancedApp = ({ nodeTypes }) => {
             />
           </ReactFlow>
         </div>
+
+        {/* Object & Template Browser */}
+        <ObjectTemplateBrowser
+          isVisible={browserControls.isOpen}
+          onObjectSelect={handleObjectSelect}
+          onTemplateSelect={handleTemplateSelect}
+          onClose={browserControls.closeBrowser}
+        />
 
         {/* Device Manager Panel */}
         <DeviceManager 
