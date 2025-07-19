@@ -1,0 +1,237 @@
+/**
+ * Drag-to-Live Export CSS
+ * Styling for drag-and-drop export functionality
+ */
+
+.drag-to-live-export {
+  position: relative;
+}
+
+.drag-zone {
+  border: 2px dashed var(--mantine-color-gray-4);
+  transition: all 0.2s ease;
+  cursor: grab;
+  background: linear-gradient(
+    135deg,
+    rgba(35, 34, 126, 0.02) 0%,
+    rgba(23, 226, 195, 0.02) 100%
+  );
+}
+
+.drag-zone:hover {
+  border-color: #17e2c3;
+  background: linear-gradient(
+    135deg,
+    rgba(35, 34, 126, 0.05) 0%,
+    rgba(23, 226, 195, 0.05) 100%
+  );
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(23, 226, 195, 0.1);
+}
+
+.drag-zone:active {
+  cursor: grabbing;
+  transform: translateY(0);
+}
+
+.drag-zone.success {
+  border-color: #17e2c3;
+  background: linear-gradient(
+    135deg,
+    rgba(23, 226, 195, 0.1) 0%,
+    rgba(35, 34, 126, 0.05) 100%
+  );
+}
+
+.drag-zone.dragging {
+  opacity: 0.8;
+  transform: scale(0.98);
+  border-color: #23227e;
+  background: linear-gradient(
+    135deg,
+    rgba(35, 34, 126, 0.1) 0%,
+    rgba(23, 226, 195, 0.1) 100%
+  );
+}
+
+/* Drag preview styling */
+.drag-zone [draggable="true"] {
+  cursor: grab;
+  transition: all 0.2s ease;
+}
+
+.drag-zone [draggable="true"]:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.drag-zone [draggable="true"]:active {
+  cursor: grabbing;
+  transform: scale(0.98);
+}
+
+/* Export progress animations */
+.export-progress {
+  position: relative;
+  overflow: hidden;
+}
+
+.export-progress::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(23, 226, 195, 0.1) 50%,
+    transparent 100%
+  );
+  animation: progress-shimmer 2s infinite;
+}
+
+@keyframes progress-shimmer {
+  0% { left: -100%; }
+  100% { left: 100%; }
+}
+
+/* File icon animations */
+.file-icon {
+  display: inline-block;
+  animation: file-bounce 0.5s ease-out;
+}
+
+@keyframes file-bounce {
+  0% { transform: scale(0.8) translateY(10px); opacity: 0; }
+  50% { transform: scale(1.1) translateY(-5px); opacity: 0.8; }
+  100% { transform: scale(1) translateY(0); opacity: 1; }
+}
+
+/* Success state animations */
+.drag-zone.success {
+  animation: success-pulse 0.6s ease-out;
+}
+
+@keyframes success-pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.02); }
+  100% { transform: scale(1); }
+}
+
+/* Download button hover effect */
+.download-button {
+  position: relative;
+  overflow: hidden;
+}
+
+.download-button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.1) 50%,
+    transparent 100%
+  );
+  transition: left 0.3s ease;
+}
+
+.download-button:hover::before {
+  left: 100%;
+}
+
+/* Connection status indicators */
+.connection-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 500;
+}
+
+.connection-status.connected {
+  background-color: rgba(64, 192, 87, 0.1);
+  color: #40c057;
+}
+
+.connection-status.disconnected {
+  background-color: rgba(250, 82, 82, 0.1);
+  color: #fa5252;
+}
+
+.connection-status.connecting {
+  background-color: rgba(255, 165, 0, 0.1);
+  color: #ffa500;
+}
+
+.connection-status-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  animation: status-pulse 2s infinite;
+}
+
+@keyframes status-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .drag-zone {
+    padding: 16px !important;
+  }
+  
+  .drag-zone [draggable="true"]:hover {
+    transform: none;
+  }
+  
+  .drag-zone:hover {
+    transform: none;
+  }
+}
+
+/* High contrast mode */
+@media (prefers-contrast: high) {
+  .drag-zone {
+    border-width: 3px;
+    border-color: var(--mantine-color-gray-7) !important;
+  }
+  
+  .drag-zone.success {
+    border-color: var(--mantine-color-green-7) !important;
+  }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .drag-zone,
+  .drag-zone [draggable="true"],
+  .file-icon,
+  .export-progress::before,
+  .download-button::before,
+  .connection-status-dot {
+    animation: none !important;
+    transition: none !important;
+  }
+  
+  .drag-zone:hover,
+  .drag-zone [draggable="true"]:hover {
+    transform: none !important;
+  }
+}
+
+/* Print styles */
+@media print {
+  .drag-to-live-export {
+    display: none;
+  }
+}

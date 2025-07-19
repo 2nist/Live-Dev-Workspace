@@ -1,0 +1,446 @@
+/* Devible Brand Theme Variables and Overrides */
+
+:root {
+  /* === PRIMARY BRAND COLORS === */
+  --devible-primary: #23227e;          /* Deep Purple - Primary brand */
+  --devible-secondary: #17e2c3;        /* Teal - Secondary accent */
+  --devible-tertiary: #ffa500;         /* Orange - Action/warning */
+  
+  /* === BRAND COLOR VARIATIONS === */
+  --devible-primary-50: #f5f5ff;
+  --devible-primary-100: #ebebff;
+  --devible-primary-200: #d6d6ff;
+  --devible-primary-300: #b8b8ff;
+  --devible-primary-400: #9999ff;
+  --devible-primary-500: #7575ff;
+  --devible-primary-600: #5656e6;
+  --devible-primary-700: #3838cc;
+  --devible-primary-800: #23227e;      /* Primary */
+  --devible-primary-900: #1a1a5c;
+  
+  --devible-secondary-50: #f0fffe;
+  --devible-secondary-100: #ccfff8;
+  --devible-secondary-200: #99fff0;
+  --devible-secondary-300: #66ffe8;
+  --devible-secondary-400: #33ffe0;
+  --devible-secondary-500: #17e2c3;    /* Secondary */
+  --devible-secondary-600: #14c2a8;
+  --devible-secondary-700: #11a28d;
+  --devible-secondary-800: #0e8272;
+  --devible-secondary-900: #0b6257;
+  
+  --devible-tertiary-50: #fff8f0;
+  --devible-tertiary-100: #ffedcc;
+  --devible-tertiary-200: #ffd999;
+  --devible-tertiary-300: #ffc566;
+  --devible-tertiary-400: #ffb133;
+  --devible-tertiary-500: #ffa500;     /* Tertiary */
+  --devible-tertiary-600: #e6940e;
+  --devible-tertiary-700: #cc831c;
+  --devible-tertiary-800: #b3722a;
+  --devible-tertiary-900: #996138;
+  
+  /* === SEMANTIC COLORS === */
+  --devible-success: #10b981;
+  --devible-warning: #f59e0b;
+  --devible-error: #ef4444;
+  --devible-info: #3b82f6;
+  
+  /* === NEUTRAL PALETTE === */
+  --devible-white: #ffffff;
+  --devible-gray-50: #f9fafb;
+  --devible-gray-100: #f3f4f6;
+  --devible-gray-200: #e5e7eb;
+  --devible-gray-300: #d1d5db;
+  --devible-gray-400: #9ca3af;
+  --devible-gray-500: #6b7280;
+  --devible-gray-600: #4b5563;
+  --devible-gray-700: #374151;
+  --devible-gray-800: #1f2937;
+  --devible-gray-900: #111827;
+  --devible-black: #000000;
+  
+  /* === TYPOGRAPHY === */
+  --devible-font-family-primary: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --devible-font-family-mono: 'JetBrains Mono', 'Fira Code', 'Source Code Pro', monospace;
+  --devible-font-family-display: 'Cal Sans', 'Inter', sans-serif;
+  
+  /* Font Weights */
+  --devible-font-weight-light: 300;
+  --devible-font-weight-normal: 400;
+  --devible-font-weight-medium: 500;
+  --devible-font-weight-semibold: 600;
+  --devible-font-weight-bold: 700;
+  --devible-font-weight-extrabold: 800;
+  
+  /* Font Sizes */
+  --devible-text-xs: 0.75rem;          /* 12px */
+  --devible-text-sm: 0.875rem;         /* 14px */
+  --devible-text-base: 1rem;           /* 16px */
+  --devible-text-lg: 1.125rem;         /* 18px */
+  --devible-text-xl: 1.25rem;          /* 20px */
+  --devible-text-2xl: 1.5rem;          /* 24px */
+  --devible-text-3xl: 1.875rem;        /* 30px */
+  --devible-text-4xl: 2.25rem;         /* 36px */
+  --devible-text-5xl: 3rem;            /* 48px */
+  
+  /* Line Heights */
+  --devible-leading-tight: 1.25;
+  --devible-leading-normal: 1.5;
+  --devible-leading-relaxed: 1.75;
+  
+  /* === SPACING SYSTEM === */
+  --devible-space-1: 0.25rem;          /* 4px */
+  --devible-space-2: 0.5rem;           /* 8px */
+  --devible-space-3: 0.75rem;          /* 12px */
+  --devible-space-4: 1rem;             /* 16px */
+  --devible-space-5: 1.25rem;          /* 20px */
+  --devible-space-6: 1.5rem;           /* 24px */
+  --devible-space-8: 2rem;             /* 32px */
+  --devible-space-10: 2.5rem;          /* 40px */
+  --devible-space-12: 3rem;            /* 48px */
+  --devible-space-16: 4rem;            /* 64px */
+  --devible-space-20: 5rem;            /* 80px */
+  
+  /* === BORDER RADIUS === */
+  --devible-radius-xs: 0.125rem;       /* 2px */
+  --devible-radius-sm: 0.25rem;        /* 4px */
+  --devible-radius-md: 0.375rem;       /* 6px */
+  --devible-radius-lg: 0.5rem;         /* 8px */
+  --devible-radius-xl: 0.75rem;        /* 12px */
+  --devible-radius-2xl: 1rem;          /* 16px */
+  --devible-radius-full: 9999px;
+  
+  /* === SHADOWS === */
+  --devible-shadow-xs: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --devible-shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+  --devible-shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --devible-shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  --devible-shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  --devible-shadow-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  --devible-shadow-inner: inset 0 2px 4px 0 rgba(0, 0, 0, 0.06);
+  
+  /* Brand-specific shadows */
+  --devible-shadow-primary: 0 4px 14px 0 rgba(35, 34, 126, 0.15);
+  --devible-shadow-secondary: 0 4px 14px 0 rgba(23, 226, 195, 0.15);
+  --devible-shadow-tertiary: 0 4px 14px 0 rgba(255, 165, 0, 0.15);
+  
+  /* === GRADIENTS === */
+  --devible-gradient-primary: linear-gradient(135deg, var(--devible-primary-600) 0%, var(--devible-primary-800) 100%);
+  --devible-gradient-secondary: linear-gradient(135deg, var(--devible-secondary-400) 0%, var(--devible-secondary-600) 100%);
+  --devible-gradient-brand: linear-gradient(135deg, var(--devible-primary-600) 0%, var(--devible-secondary-500) 50%, var(--devible-tertiary-500) 100%);
+  --devible-gradient-dark: linear-gradient(135deg, var(--devible-gray-900) 0%, var(--devible-gray-800) 100%);
+  
+  /* === TRANSITIONS === */
+  --devible-transition-fast: all 0.15s ease;
+  --devible-transition-normal: all 0.2s ease;
+  --devible-transition-slow: all 0.3s ease;
+  
+  /* === Z-INDEX SCALE === */
+  --devible-z-dropdown: 1000;
+  --devible-z-sticky: 1020;
+  --devible-z-fixed: 1030;
+  --devible-z-modal-backdrop: 1040;
+  --devible-z-modal: 1050;
+  --devible-z-popover: 1060;
+  --devible-z-tooltip: 1070;
+  --devible-z-notification: 1080;
+  
+  /* === DARK THEME OVERRIDES === */
+  --devible-bg-primary: var(--devible-gray-900);
+  --devible-bg-secondary: var(--devible-gray-800);
+  --devible-bg-tertiary: var(--devible-gray-700);
+  --devible-text-primary: var(--devible-white);
+  --devible-text-secondary: var(--devible-gray-300);
+  --devible-text-tertiary: var(--devible-gray-400);
+  --devible-border-primary: var(--devible-gray-700);
+  --devible-border-secondary: var(--devible-gray-600);
+  
+  /* === MAX FOR LIVE SPECIFIC === */
+  --max-bg: var(--devible-gray-900);
+  --max-text-color: var(--devible-white);
+  --max-inlet-color: var(--devible-secondary-500);
+  --max-outlet-color: var(--devible-tertiary-500);
+  --max-object-border: var(--devible-gray-600);
+  --max-connection-color: var(--devible-gray-400);
+  --max-selection-color: var(--devible-primary-500);
+}
+
+/* === LIGHT THEME OVERRIDES === */
+[data-theme="light"] {
+  --devible-bg-primary: var(--devible-white);
+  --devible-bg-secondary: var(--devible-gray-50);
+  --devible-bg-tertiary: var(--devible-gray-100);
+  --devible-text-primary: var(--devible-gray-900);
+  --devible-text-secondary: var(--devible-gray-700);
+  --devible-text-tertiary: var(--devible-gray-500);
+  --devible-border-primary: var(--devible-gray-200);
+  --devible-border-secondary: var(--devible-gray-300);
+  
+  /* Max for Live light theme */
+  --max-bg: var(--devible-gray-100);
+  --max-text-color: var(--devible-gray-900);
+  --max-object-border: var(--devible-gray-300);
+  --max-connection-color: var(--devible-gray-600);
+}
+
+/* === HIGH CONTRAST THEME === */
+[data-theme="high-contrast"] {
+  --devible-bg-primary: #000000;
+  --devible-bg-secondary: #1a1a1a;
+  --devible-bg-tertiary: #333333;
+  --devible-text-primary: #ffffff;
+  --devible-text-secondary: #ffffff;
+  --devible-text-tertiary: #cccccc;
+  --devible-border-primary: #ffffff;
+  --devible-border-secondary: #cccccc;
+  
+  --devible-primary-500: #7575ff;
+  --devible-secondary-500: #33ffe0;
+  --devible-tertiary-500: #ffb133;
+}
+
+/* === COMPONENT-SPECIFIC OVERRIDES === */
+
+/* Button System */
+.btn-devible-primary {
+  background: var(--devible-gradient-primary);
+  color: var(--devible-white);
+  border: none;
+  box-shadow: var(--devible-shadow-primary);
+  font-weight: var(--devible-font-weight-semibold);
+  transition: var(--devible-transition-normal);
+}
+
+.btn-devible-primary:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--devible-shadow-lg);
+}
+
+.btn-devible-secondary {
+  background: var(--devible-gradient-secondary);
+  color: var(--devible-gray-900);
+  border: none;
+  box-shadow: var(--devible-shadow-secondary);
+  font-weight: var(--devible-font-weight-semibold);
+  transition: var(--devible-transition-normal);
+}
+
+.btn-devible-outline {
+  background: transparent;
+  color: var(--devible-primary-500);
+  border: 2px solid var(--devible-primary-500);
+  font-weight: var(--devible-font-weight-semibold);
+  transition: var(--devible-transition-normal);
+}
+
+.btn-devible-outline:hover {
+  background: var(--devible-primary-500);
+  color: var(--devible-white);
+}
+
+/* Card System */
+.card-devible {
+  background: var(--devible-bg-secondary);
+  border: 1px solid var(--devible-border-primary);
+  border-radius: var(--devible-radius-lg);
+  box-shadow: var(--devible-shadow-sm);
+  transition: var(--devible-transition-normal);
+}
+
+.card-devible:hover {
+  box-shadow: var(--devible-shadow-md);
+  transform: translateY(-2px);
+}
+
+.card-devible-premium {
+  background: var(--devible-gradient-brand);
+  color: var(--devible-white);
+  border: none;
+  box-shadow: var(--devible-shadow-lg);
+}
+
+/* Typography Classes */
+.text-devible-h1 {
+  font-family: var(--devible-font-family-display);
+  font-size: var(--devible-text-5xl);
+  font-weight: var(--devible-font-weight-extrabold);
+  line-height: var(--devible-leading-tight);
+  color: var(--devible-text-primary);
+}
+
+.text-devible-h2 {
+  font-family: var(--devible-font-family-display);
+  font-size: var(--devible-text-4xl);
+  font-weight: var(--devible-font-weight-bold);
+  line-height: var(--devible-leading-tight);
+  color: var(--devible-text-primary);
+}
+
+.text-devible-h3 {
+  font-family: var(--devible-font-family-primary);
+  font-size: var(--devible-text-2xl);
+  font-weight: var(--devible-font-weight-semibold);
+  line-height: var(--devible-leading-normal);
+  color: var(--devible-text-primary);
+}
+
+.text-devible-body {
+  font-family: var(--devible-font-family-primary);
+  font-size: var(--devible-text-base);
+  font-weight: var(--devible-font-weight-normal);
+  line-height: var(--devible-leading-normal);
+  color: var(--devible-text-secondary);
+}
+
+.text-devible-small {
+  font-family: var(--devible-font-family-primary);
+  font-size: var(--devible-text-sm);
+  font-weight: var(--devible-font-weight-normal);
+  line-height: var(--devible-leading-normal);
+  color: var(--devible-text-tertiary);
+}
+
+.text-devible-code {
+  font-family: var(--devible-font-family-mono);
+  font-size: var(--devible-text-sm);
+  background: var(--devible-bg-tertiary);
+  padding: var(--devible-space-1) var(--devible-space-2);
+  border-radius: var(--devible-radius-sm);
+  color: var(--devible-primary-600);
+}
+
+/* Status Indicators */
+.status-devible-connected {
+  color: var(--devible-success);
+  background: rgba(16, 185, 129, 0.1);
+  border: 1px solid rgba(16, 185, 129, 0.2);
+}
+
+.status-devible-disconnected {
+  color: var(--devible-error);
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.2);
+}
+
+.status-devible-warning {
+  color: var(--devible-warning);
+  background: rgba(245, 158, 11, 0.1);
+  border: 1px solid rgba(245, 158, 11, 0.2);
+}
+
+/* Animation Classes */
+.animate-devible-pulse {
+  animation: devible-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+.animate-devible-bounce {
+  animation: devible-bounce 1s infinite;
+}
+
+.animate-devible-fade-in {
+  animation: devible-fade-in 0.3s ease-out;
+}
+
+.animate-devible-slide-up {
+  animation: devible-slide-up 0.3s ease-out;
+}
+
+@keyframes devible-pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+@keyframes devible-bounce {
+  0%, 100% {
+    transform: translateY(-25%);
+    animation-timing-function: cubic-bezier(0.8, 0, 1, 1);
+  }
+  50% {
+    transform: none;
+    animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
+  }
+}
+
+@keyframes devible-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes devible-slide-up {
+  from {
+    transform: translateY(10px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* === UTILITY CLASSES === */
+.bg-devible-gradient-primary {
+  background: var(--devible-gradient-primary);
+}
+
+.bg-devible-gradient-secondary {
+  background: var(--devible-gradient-secondary);
+}
+
+.bg-devible-gradient-brand {
+  background: var(--devible-gradient-brand);
+}
+
+.text-devible-primary {
+  color: var(--devible-primary-500);
+}
+
+.text-devible-secondary {
+  color: var(--devible-secondary-500);
+}
+
+.text-devible-tertiary {
+  color: var(--devible-tertiary-500);
+}
+
+.border-devible-primary {
+  border-color: var(--devible-primary-500);
+}
+
+.border-devible-secondary {
+  border-color: var(--devible-secondary-500);
+}
+
+.shadow-devible-primary {
+  box-shadow: var(--devible-shadow-primary);
+}
+
+.shadow-devible-secondary {
+  box-shadow: var(--devible-shadow-secondary);
+}
+
+/* === RESPONSIVE DESIGN === */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme]) {
+    --devible-bg-primary: var(--devible-white);
+    --devible-bg-secondary: var(--devible-gray-50);
+    --devible-text-primary: var(--devible-gray-900);
+    --devible-text-secondary: var(--devible-gray-700);
+  }
+}

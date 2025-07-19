@@ -1,0 +1,439 @@
+/* Devible Icon System Styles */
+
+/* === BASE ICON STYLING === */
+.devible-icon {
+  display: inline-block;
+  vertical-align: middle;
+  transition: var(--devible-transition-normal);
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+}
+
+.devible-icon:hover {
+  opacity: 0.8;
+}
+
+/* === ICON BUTTON SYSTEM === */
+.devible-icon-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: var(--devible-radius-md);
+  cursor: pointer;
+  transition: var(--devible-transition-normal);
+  font-size: 0;
+  background: transparent;
+  padding: var(--devible-space-2);
+  min-width: 44px;
+  min-height: 44px;
+  position: relative;
+  outline: none;
+}
+
+.devible-icon-button:focus-visible {
+  outline: 3px solid var(--devible-primary-500);
+  outline-offset: 2px;
+}
+
+.devible-icon-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* Icon Button Variants */
+.btn-devible-icon-default {
+  color: var(--devible-text-secondary);
+  background: transparent;
+}
+
+.btn-devible-icon-default:hover:not(:disabled) {
+  color: var(--devible-text-primary);
+  background: var(--devible-bg-tertiary);
+}
+
+.btn-devible-icon-primary {
+  color: var(--devible-primary-500);
+  background: rgba(35, 34, 126, 0.1);
+}
+
+.btn-devible-icon-primary:hover:not(:disabled) {
+  color: var(--devible-white);
+  background: var(--devible-primary-500);
+  box-shadow: var(--devible-shadow-primary);
+}
+
+.btn-devible-icon-secondary {
+  color: var(--devible-secondary-500);
+  background: rgba(23, 226, 195, 0.1);
+}
+
+.btn-devible-icon-secondary:hover:not(:disabled) {
+  color: var(--devible-gray-900);
+  background: var(--devible-secondary-500);
+  box-shadow: var(--devible-shadow-secondary);
+}
+
+.btn-devible-icon-danger {
+  color: var(--devible-error);
+  background: rgba(239, 68, 68, 0.1);
+}
+
+.btn-devible-icon-danger:hover:not(:disabled) {
+  color: var(--devible-white);
+  background: var(--devible-error);
+  box-shadow: 0 4px 14px 0 rgba(239, 68, 68, 0.15);
+}
+
+/* === STATUS ICON SYSTEM === */
+.status-icon-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.status-indicator {
+  position: absolute;
+  top: -2px;
+  right: -2px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  border: 2px solid var(--devible-bg-primary);
+  animation: devible-pulse 2s infinite;
+}
+
+.status-indicator.status-connected {
+  background-color: var(--devible-success);
+}
+
+.status-indicator.status-disconnected {
+  background-color: var(--devible-error);
+}
+
+.status-indicator.status-warning {
+  background-color: var(--devible-warning);
+}
+
+.status-indicator.status-info {
+  background-color: var(--devible-info);
+}
+
+/* === ICON SIZE VARIANTS === */
+.icon-xs {
+  width: 16px;
+  height: 16px;
+}
+
+.icon-sm {
+  width: 20px;
+  height: 20px;
+}
+
+.icon-md {
+  width: 24px;
+  height: 24px;
+}
+
+.icon-lg {
+  width: 32px;
+  height: 32px;
+}
+
+.icon-xl {
+  width: 40px;
+  height: 40px;
+}
+
+/* === ICON GROUPS === */
+.icon-group {
+  display: flex;
+  align-items: center;
+  gap: var(--devible-space-2);
+}
+
+.icon-group-vertical {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--devible-space-2);
+}
+
+/* === BRAND LOGO STYLING === */
+.devible-logo {
+  filter: drop-shadow(0 2px 8px rgba(35, 34, 126, 0.2));
+}
+
+.devible-logo:hover {
+  filter: drop-shadow(0 4px 12px rgba(35, 34, 126, 0.3));
+  transform: scale(1.05);
+}
+
+/* === CONTEXTUAL ICON STYLES === */
+
+/* Toolbar Icons */
+.toolbar .devible-icon-button {
+  color: var(--devible-text-secondary);
+  background: transparent;
+}
+
+.toolbar .devible-icon-button:hover {
+  color: var(--devible-text-primary);
+  background: var(--devible-bg-tertiary);
+}
+
+.toolbar .devible-icon-button.active {
+  color: var(--devible-primary-500);
+  background: rgba(35, 34, 126, 0.1);
+}
+
+/* Sidebar Icons */
+.sidebar .devible-icon-button {
+  width: 100%;
+  justify-content: flex-start;
+  padding: var(--devible-space-3);
+  border-radius: var(--devible-radius-lg);
+  text-align: left;
+  font-size: var(--devible-text-sm);
+  font-weight: var(--devible-font-weight-medium);
+  gap: var(--devible-space-3);
+}
+
+.sidebar .devible-icon-button .devible-icon {
+  flex-shrink: 0;
+}
+
+/* Modal Icons */
+.modal-header .devible-icon-button {
+  position: absolute;
+  top: var(--devible-space-4);
+  right: var(--devible-space-4);
+  color: var(--devible-text-tertiary);
+}
+
+.modal-header .devible-icon-button:hover {
+  color: var(--devible-text-primary);
+  background: var(--devible-bg-tertiary);
+}
+
+/* Card Icons */
+.card-header .devible-icon-button {
+  color: var(--devible-text-tertiary);
+}
+
+.card-header .devible-icon-button:hover {
+  color: var(--devible-text-primary);
+}
+
+/* === ANIMATION VARIANTS === */
+.icon-spin {
+  animation: devible-spin 1s linear infinite;
+}
+
+.icon-pulse {
+  animation: devible-pulse 2s ease-in-out infinite;
+}
+
+.icon-bounce {
+  animation: devible-bounce 1s infinite;
+}
+
+.icon-fade-in {
+  animation: devible-fade-in 0.3s ease-out;
+}
+
+@keyframes devible-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* === ACCESSIBILITY ENHANCEMENTS === */
+
+/* High contrast mode */
+@media (prefers-contrast: high) {
+  .devible-icon-button {
+    border: 2px solid currentColor;
+  }
+  
+  .status-indicator {
+    border-width: 3px;
+  }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .devible-icon,
+  .devible-icon-button,
+  .status-indicator,
+  .devible-logo {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+/* Screen reader improvements */
+.sr-only-icon-text {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* === MOBILE & TOUCH OPTIMIZATIONS === */
+@media (hover: none) and (pointer: coarse) {
+  .devible-icon-button {
+    min-width: 48px;
+    min-height: 48px;
+    padding: var(--devible-space-3);
+  }
+  
+  .devible-icon-button:hover {
+    /* Remove hover effects on touch devices */
+    color: inherit;
+    background: inherit;
+    transform: none;
+  }
+  
+  .devible-icon-button:active {
+    background: var(--devible-bg-tertiary);
+    transform: scale(0.95);
+  }
+}
+
+/* === THEME VARIATIONS === */
+
+/* Light theme adjustments */
+[data-theme="light"] .devible-icon-button {
+  color: var(--devible-gray-600);
+}
+
+[data-theme="light"] .devible-icon-button:hover {
+  color: var(--devible-gray-900);
+  background: var(--devible-gray-100);
+}
+
+/* Dark theme adjustments */
+[data-theme="dark"] .devible-icon-button {
+  color: var(--devible-gray-400);
+}
+
+[data-theme="dark"] .devible-icon-button:hover {
+  color: var(--devible-gray-100);
+  background: var(--devible-gray-800);
+}
+
+/* === ICON CONTEXT UTILITIES === */
+.icon-with-text {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--devible-space-2);
+  font-size: var(--devible-text-sm);
+  font-weight: var(--devible-font-weight-medium);
+  color: var(--devible-text-secondary);
+}
+
+.icon-with-text .devible-icon {
+  flex-shrink: 0;
+}
+
+.icon-badge {
+  position: relative;
+}
+
+.icon-badge::after {
+  content: attr(data-badge);
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  background: var(--devible-error);
+  color: white;
+  font-size: 10px;
+  font-weight: 600;
+  padding: 2px 6px;
+  border-radius: 10px;
+  min-width: 16px;
+  height: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+}
+
+/* === LOADING STATES === */
+.icon-loading {
+  opacity: 0.6;
+  animation: devible-pulse 1.5s ease-in-out infinite;
+}
+
+.icon-loading .devible-icon {
+  animation: devible-spin 1s linear infinite;
+}
+
+/* === ICON GRID SYSTEM === */
+.icon-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(60px, 1fr));
+  gap: var(--devible-space-4);
+  padding: var(--devible-space-4);
+}
+
+.icon-grid-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--devible-space-2);
+  padding: var(--devible-space-3);
+  border-radius: var(--devible-radius-lg);
+  transition: var(--devible-transition-normal);
+  cursor: pointer;
+}
+
+.icon-grid-item:hover {
+  background: var(--devible-bg-tertiary);
+  transform: translateY(-2px);
+}
+
+.icon-grid-item .icon-label {
+  font-size: var(--devible-text-xs);
+  color: var(--devible-text-tertiary);
+  text-align: center;
+  font-weight: var(--devible-font-weight-medium);
+}
+
+/* === RESPONSIVE ICON SIZING === */
+@media (max-width: 768px) {
+  .devible-icon-button {
+    min-width: 48px;
+    min-height: 48px;
+  }
+  
+  .toolbar .devible-icon-button {
+    padding: var(--devible-space-4);
+  }
+  
+  .icon-grid {
+    grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+  }
+}
+
+@media (max-width: 480px) {
+  .icon-group {
+    flex-wrap: wrap;
+  }
+  
+  .icon-with-text {
+    flex-direction: column;
+    text-align: center;
+    gap: var(--devible-space-1);
+  }
+}

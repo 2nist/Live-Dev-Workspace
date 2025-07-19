@@ -1,0 +1,254 @@
+/* Icon Branding Showcase Styles */
+
+.icon-branding-showcase {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+  min-height: 100vh;
+}
+
+.showcase-header {
+  text-align: center;
+  margin-bottom: 3rem;
+  padding: 2rem;
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+.showcase-header h1 {
+  margin: 1rem 0 0.5rem 0;
+  font-size: 2.5rem;
+  font-weight: 700;
+  background: linear-gradient(135deg, 
+    var(--devible-primary-600), 
+    var(--devible-secondary-500), 
+    var(--devible-tertiary-500)
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.showcase-header p {
+  color: var(--devible-neutral-600);
+  font-size: 1.125rem;
+  margin: 0;
+}
+
+.showcase-section {
+  margin-bottom: 3rem;
+  background: white;
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+}
+
+.showcase-section h2 {
+  margin: 0 0 1.5rem 0;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--devible-neutral-800);
+  border-bottom: 2px solid var(--devible-primary-100);
+  padding-bottom: 0.5rem;
+}
+
+.icon-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 1.5rem;
+  align-items: center;
+}
+
+.icon-grid.size-demo {
+  grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+}
+
+.icon-demo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  border: 1px solid var(--devible-neutral-200);
+}
+
+.icon-demo:hover {
+  background: var(--devible-neutral-50);
+  border-color: var(--devible-primary-200);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.icon-demo span {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--devible-neutral-700);
+  text-align: center;
+}
+
+.icon-demo.interactive {
+  cursor: pointer;
+}
+
+.icon-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+}
+
+.icon-button:hover {
+  background: var(--devible-neutral-100);
+}
+
+.icon-button:active {
+  transform: scale(0.95);
+}
+
+.button-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 1rem;
+}
+
+.btn-devible-icon {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  border: none;
+  border-radius: 8px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-decoration: none;
+  font-size: 0.875rem;
+}
+
+.btn-devible-icon:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.btn-devible-icon:active {
+  transform: translateY(0);
+}
+
+.btn-devible-icon-primary {
+  background: var(--devible-primary-500);
+  color: white;
+}
+
+.btn-devible-icon-primary:hover {
+  background: var(--devible-primary-600);
+}
+
+.btn-devible-icon-secondary {
+  background: var(--devible-secondary-500);
+  color: white;
+}
+
+.btn-devible-icon-secondary:hover {
+  background: var(--devible-secondary-600);
+}
+
+.btn-devible-icon-danger {
+  background: var(--devible-error);
+  color: white;
+}
+
+.btn-devible-icon-danger:hover {
+  background: #dc2626;
+}
+
+.code-examples {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+.code-example {
+  background: var(--devible-neutral-900);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.code-example h3 {
+  margin: 0;
+  padding: 1rem;
+  background: var(--devible-neutral-800);
+  color: white;
+  font-size: 0.875rem;
+  font-weight: 600;
+  border-bottom: 1px solid var(--devible-neutral-700);
+}
+
+.code-example pre {
+  margin: 0;
+  padding: 1rem;
+  overflow-x: auto;
+}
+
+.code-example code {
+  color: #e2e8f0;
+  font-family: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', monospace;
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+
+/* Theme-specific text colors */
+.theme-primary { color: var(--devible-primary-500); }
+.theme-secondary { color: var(--devible-secondary-500); }
+.theme-tertiary { color: var(--devible-tertiary-500); }
+.theme-success { color: var(--devible-success); }
+.theme-warning { color: var(--devible-warning); }
+.theme-error { color: var(--devible-error); }
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .icon-branding-showcase {
+    padding: 1rem;
+  }
+  
+  .showcase-header {
+    padding: 1.5rem;
+  }
+  
+  .showcase-header h1 {
+    font-size: 2rem;
+  }
+  
+  .showcase-section {
+    padding: 1.5rem;
+  }
+  
+  .icon-grid {
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+    gap: 1rem;
+  }
+  
+  .code-examples {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .showcase-header h1 {
+    font-size: 1.75rem;
+  }
+  
+  .icon-grid {
+    grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+  }
+  
+  .button-grid {
+    grid-template-columns: 1fr;
+  }
+}

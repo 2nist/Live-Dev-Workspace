@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Icon Visual Reference</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .icon-showcase {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+        .icon-card {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        .icon-display {
+            width: 48px;
+            height: 48px;
+            margin: 0 auto 15px;
+            background: #3b82f6;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+        }
+        .icon-name {
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #1e293b;
+        }
+        .icon-desc {
+            color: #64748b;
+            font-size: 14px;
+        }
+        h1 {
+            text-align: center;
+            color: #1e293b;
+            margin-bottom: 30px;
+        }
+        .delete-icon { background: #ef4444; }
+        .test-icon { background: #10b981; }
+        .play-icon { background: #3b82f6; }
+        .record-icon { background: #ef4444; }
+        .settings-icon { background: #8b5cf6; }
+    </style>
+</head>
+<body>
+    <h1>🎨 Your Icon System - Visual Reference</h1>
+    
+    <div class="icon-showcase">
+        <div class="icon-card">
+            <div class="icon-display delete-icon">🗑️</div>
+            <div class="icon-name">Delete Icon</div>
+            <div class="icon-desc">Trash can for deleting items, files, or data</div>
+        </div>
+
+        <div class="icon-card">
+            <div class="icon-display test-icon">🧪</div>
+            <div class="icon-name">Test Icon</div>
+            <div class="icon-desc">Test tube for running tests or experiments</div>
+        </div>
+
+        <div class="icon-card">
+            <div class="icon-display play-icon">▶️</div>
+            <div class="icon-name">Play Icon</div>
+            <div class="icon-desc">Triangle for starting playback or execution</div>
+        </div>
+
+        <div class="icon-card">
+            <div class="icon-display">⏸️</div>
+            <div class="icon-name">Pause Icon</div>
+            <div class="icon-desc">Two bars for pausing playback</div>
+        </div>
+
+        <div class="icon-card">
+            <div class="icon-display">⏹️</div>
+            <div class="icon-name">Stop Icon</div>
+            <div class="icon-desc">Square for stopping playback</div>
+        </div>
+
+        <div class="icon-card">
+            <div class="icon-display record-icon">⏺️</div>
+            <div class="icon-name">Record Icon</div>
+            <div class="icon-desc">Circle for starting recording</div>
+        </div>
+
+        <div class="icon-card">
+            <div class="icon-display">📊</div>
+            <div class="icon-name">Waveform Icon</div>
+            <div class="icon-desc">Audio bars showing sound levels</div>
+        </div>
+
+        <div class="icon-card">
+            <div class="icon-display">🎛️</div>
+            <div class="icon-name">Mixer Icon</div>
+            <div class="icon-desc">Audio mixer with faders and knobs</div>
+        </div>
+
+        <div class="icon-card">
+            <div class="icon-display">💾</div>
+            <div class="icon-name">Save Icon</div>
+            <div class="icon-desc">Floppy disk for saving files</div>
+        </div>
+
+        <div class="icon-card">
+            <div class="icon-display">📂</div>
+            <div class="icon-name">Load Icon</div>
+            <div class="icon-desc">Folder for opening/loading files</div>
+        </div>
+
+        <div class="icon-card">
+            <div class="icon-display">✏️</div>
+            <div class="icon-name">Edit Icon</div>
+            <div class="icon-desc">Pencil for editing content</div>
+        </div>
+
+        <div class="icon-card">
+            <div class="icon-display settings-icon">⚙️</div>
+            <div class="icon-name">Settings Icon</div>
+            <div class="icon-desc">Gear for configuration and settings</div>
+        </div>
+    </div>
+
+    <h2>How These Work in Your Code:</h2>
+    
+    <div style="background: #1e293b; color: #e2e8f0; padding: 20px; border-radius: 8px; margin: 20px 0;">
+        <h3 style="color: #60a5fa; margin-top: 0;">Usage Examples:</h3>
+        <pre style="margin: 0; font-family: 'Courier New', monospace;">
+// Import the icons
+import { DeleteIcon, TestIcon, PlayIcon } from './DevibleIcons';
+
+// Use in your components
+&lt;DeleteIcon size={24} color="red" /&gt;           // 🗑️ Red trash can
+&lt;TestIcon size={32} color="green" /&gt;         // 🧪 Green test tube  
+&lt;PlayIcon size={20} color="blue" /&gt;          // ▶️ Blue play button
+
+// With click handlers
+&lt;button onClick={handleDelete}&gt;
+  &lt;DeleteIcon size={16} /&gt;
+  Delete Item
+&lt;/button&gt;
+
+&lt;button onClick={runTests}&gt;
+  &lt;TestIcon size={16} /&gt;
+  Run Tests
+&lt;/button&gt;
+        </pre>
+    </div>
+
+    <p><strong>These are vector graphics (SVG)</strong> that:</p>
+    <ul>
+        <li>📏 <strong>Scale perfectly</strong> - Look crisp at any size</li>
+        <li>🎨 <strong>Customizable colors</strong> - Change colors dynamically</li>
+        <li>⚡ <strong>Lightweight</strong> - Small file sizes, fast loading</li>
+        <li>♿ <strong>Accessible</strong> - Work with screen readers</li>
+        <li>🔧 <strong>Styleable</strong> - Can be styled with CSS</li>
+    </ul>
+
+</body>
+</html>

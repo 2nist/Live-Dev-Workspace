@@ -1,0 +1,111 @@
+/**
+ * Quick Start Templates CSS
+ * Styling for template selection interface
+ */
+
+.quick-start-template {
+  position: relative;
+  overflow: hidden;
+  transition: all 0.2s ease;
+}
+
+.quick-start-template::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    135deg,
+    rgba(35, 34, 126, 0.02) 0%,
+    rgba(23, 226, 195, 0.02) 50%,
+    rgba(255, 165, 0, 0.02) 100%
+  );
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  pointer-events: none;
+}
+
+.quick-start-template:hover::before {
+  opacity: 1;
+}
+
+.quick-start-template:hover {
+  transform: translateY(-2px);
+  box-shadow: 
+    0 4px 12px rgba(0, 0, 0, 0.1),
+    0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+.quick-start-template.selected {
+  transform: translateY(-1px);
+  box-shadow: 
+    0 6px 20px rgba(35, 34, 126, 0.15),
+    0 2px 6px rgba(35, 34, 126, 0.1);
+}
+
+.quick-start-template.selected::before {
+  opacity: 0.5;
+}
+
+/* Animation for template loading */
+.quick-start-template.loading {
+  pointer-events: none;
+  opacity: 0.7;
+}
+
+.quick-start-template.loading::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 20px;
+  height: 20px;
+  margin: -10px 0 0 -10px;
+  border: 2px solid #23227e;
+  border-top: 2px solid transparent;
+  border-radius: 50%;
+  animation: template-loading 1s linear infinite;
+}
+
+@keyframes template-loading {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .quick-start-template {
+    padding: 12px !important;
+  }
+  
+  .quick-start-template:hover {
+    transform: none;
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .quick-start-template {
+    border: 2px solid var(--mantine-color-gray-4) !important;
+  }
+  
+  .quick-start-template.selected {
+    border-color: var(--mantine-color-blue-6) !important;
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .quick-start-template,
+  .quick-start-template::before,
+  .quick-start-template.loading::after {
+    transition: none !important;
+    animation: none !important;
+  }
+  
+  .quick-start-template:hover {
+    transform: none !important;
+  }
+}

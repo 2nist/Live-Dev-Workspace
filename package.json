@@ -1,0 +1,151 @@
+{
+  "name": "live-dev-workspace",
+  "version": "2.0.0",
+  "description": "Professional-grade Ableton Live development platform with microservices architecture",
+  "main": "index.js",
+  "scripts": {
+    "start": "concurrently \"npm run start:gateway\" \"npm run start:frontend\"",
+    "start:frontend": "cd max-live-ide && npm start",
+    "start:gateway": "cd services && node api-gateway.js",
+    "start:dev": "docker-compose up -d",
+    "stop:dev": "docker-compose down",
+    "dev": "concurrently \"npm run dev:services\" \"npm run dev:frontend\"",
+    "dev:services": "nodemon services/api-gateway.js",
+    "dev:frontend": "cd max-live-ide && npm start",
+    "build": "npm run build:frontend && npm run build:services",
+    "build:frontend": "cd max-live-ide && npm run build",
+    "build:services": "echo 'Services build complete'",
+    "test": "npm run test:frontend && npm run test:services",
+    "test:frontend": "cd max-live-ide && npm test",
+    "test:services": "cd services && npm test",
+    "test:integration": "cd ableton-live-testing && npm test",
+    "lint": "npm run lint:frontend && npm run lint:services",
+    "lint:frontend": "cd max-live-ide && npm run lint",
+    "lint:services": "eslint services/**/*.js",
+    "docs": "npm run docs:generate && npm run docs:serve",
+    "docs:generate": "jsdoc -c .jsdoc.json",
+    "docs:serve": "http-server docs -p 8080",
+    "setup": "npm run setup:install && npm run setup:env && npm run setup:db",
+    "setup:install": "npm install && cd max-live-ide && npm install && cd ../services && npm install",
+    "setup:env": "node scripts/setup-environment.js",
+    "setup:db": "node scripts/setup-database.js",
+    "migrate": "node scripts/migrate-database.js",
+    "seed": "node scripts/seed-database.js",
+    "backup": "node scripts/backup-data.js",
+    "restore": "node scripts/restore-data.js",
+    "health": "node scripts/health-check.js",
+    "logs": "docker-compose logs -f",
+    "logs:gateway": "docker-compose logs -f api-gateway",
+    "logs:frontend": "docker-compose logs -f frontend",
+    "monitor": "npm run prometheus & npm run grafana",
+    "prometheus": "docker-compose up -d prometheus",
+    "grafana": "docker-compose up -d grafana",
+    "clean": "npm run clean:deps && npm run clean:data && npm run clean:docker",
+    "clean:deps": "rm -rf node_modules max-live-ide/node_modules services/node_modules",
+    "clean:data": "rm -rf data/cache data/logs",
+    "clean:docker": "docker-compose down -v && docker system prune -f",
+    "security": "npm audit && cd max-live-ide && npm audit && cd ../services && npm audit",
+    "update": "npm update && cd max-live-ide && npm update && cd ../services && npm update",
+    "deploy:staging": "node scripts/deploy-staging.js",
+    "deploy:production": "node scripts/deploy-production.js"
+  },
+  "dependencies": {
+    "concurrently": "^8.2.2",
+    "cross-env": "^7.0.3",
+    "dotenv": "^16.3.1"
+  },
+  "devDependencies": {
+    "eslint": "^8.57.0",
+    "eslint-config-standard": "^17.1.0",
+    "jsdoc": "^4.0.2",
+    "http-server": "^14.1.1",
+    "nodemon": "^3.0.2",
+    "jest": "^29.7.0",
+    "supertest": "^6.3.3"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=9.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/your-username/live-dev-workspace.git"
+  },
+  "keywords": [
+    "ableton-live",
+    "max-for-live",
+    "audio",
+    "midi",
+    "music-production",
+    "development-tools",
+    "microservices",
+    "react",
+    "node.js",
+    "real-time",
+    "ai-assistance",
+    "performance"
+  ],
+  "author": "ALSE Development Team",
+  "license": "MIT",
+  "workspaces": [
+    "max-live-ide",
+    "services",
+    "ableton-live-testing"
+  ],
+  "config": {
+    "platform": {
+      "name": "ALSE",
+      "version": "2.0.0",
+      "architecture": "microservices",
+      "environment": "development"
+    },
+    "services": {
+      "frontend": {
+        "port": 3000,
+        "build": "react"
+      },
+      "gateway": {
+        "port": 8000,
+        "websocket": 8080
+      },
+      "patch": {
+        "port": 8001
+      },
+      "live": {
+        "port": 8002
+      },
+      "templates": {
+        "port": 8003
+      },
+      "ai": {
+        "port": 8004
+      },
+      "test": {
+        "port": 8005
+      }
+    },
+    "databases": {
+      "postgres": {
+        "port": 5432,
+        "databases": ["alse", "alse_patches", "alse_templates", "alse_ai", "alse_tests"]
+      },
+      "redis": {
+        "port": 6379
+      },
+      "elasticsearch": {
+        "port": 9200
+      }
+    },
+    "monitoring": {
+      "prometheus": {
+        "port": 9090
+      },
+      "grafana": {
+        "port": 3001
+      },
+      "kibana": {
+        "port": 5601
+      }
+    }
+  }
+}

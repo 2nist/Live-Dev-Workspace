@@ -1,0 +1,223 @@
+/* Onboarding Tour Styles */
+
+.onboarding-tour {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1000;
+  pointer-events: none;
+}
+
+.onboarding-spotlight {
+  position: absolute;
+  border: 3px solid #17e2c3;
+  border-radius: 8px;
+  box-shadow: 
+    0 0 0 4px rgba(23, 226, 195, 0.3),
+    0 0 20px rgba(23, 226, 195, 0.5);
+  animation: pulse-highlight 2s infinite;
+  pointer-events: none;
+  background: transparent;
+}
+
+.onboarding-spotlight::before {
+  content: '';
+  position: absolute;
+  top: -8px;
+  left: -8px;
+  right: -8px;
+  bottom: -8px;
+  border: 2px solid rgba(23, 226, 195, 0.4);
+  border-radius: 12px;
+  animation: pulse-glow 2s infinite 0.5s;
+}
+
+@keyframes pulse-highlight {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.02);
+    opacity: 0.8;
+  }
+}
+
+@keyframes pulse-glow {
+  0%, 100% {
+    opacity: 0.4;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.8;
+    transform: scale(1.05);
+  }
+}
+
+.onboarding-modal {
+  position: fixed;
+  z-index: 1001;
+  border-radius: 16px;
+  box-shadow: 
+    0 20px 40px rgba(0, 0, 0, 0.3),
+    0 0 0 1px rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  background: linear-gradient(135deg, 
+    rgba(35, 34, 126, 0.95) 0%, 
+    rgba(35, 34, 126, 0.98) 100%);
+  border: 1px solid rgba(23, 226, 195, 0.2);
+}
+
+.onboarding-header {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding-bottom: 16px;
+  margin-bottom: 16px;
+}
+
+.onboarding-icon {
+  background: linear-gradient(135deg, #17e2c3, #23227e);
+  border: 2px solid rgba(255, 255, 255, 0.2);
+}
+
+.onboarding-progress {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.onboarding-progress-fill {
+  background: linear-gradient(90deg, #17e2c3, #23227e);
+  height: 6px;
+  transition: width 0.3s ease;
+  border-radius: 8px;
+}
+
+.onboarding-content {
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.onboarding-content strong {
+  color: #17e2c3;
+  font-weight: 600;
+}
+
+.onboarding-interactive-hint {
+  background: linear-gradient(135deg, 
+    rgba(255, 165, 0, 0.2),
+    rgba(255, 165, 0, 0.1));
+  border: 1px solid rgba(255, 165, 0, 0.3);
+  border-radius: 8px;
+  padding: 12px;
+  margin: 16px 0;
+  animation: gentle-pulse 3s infinite;
+}
+
+@keyframes gentle-pulse {
+  0%, 100% {
+    background: rgba(255, 165, 0, 0.1);
+    border-color: rgba(255, 165, 0, 0.2);
+  }
+  50% {
+    background: rgba(255, 165, 0, 0.2);
+    border-color: rgba(255, 165, 0, 0.4);
+  }
+}
+
+.onboarding-completed-hint {
+  background: linear-gradient(135deg, 
+    rgba(23, 226, 195, 0.2),
+    rgba(23, 226, 195, 0.1));
+  border: 1px solid rgba(23, 226, 195, 0.3);
+  border-radius: 8px;
+  padding: 12px;
+  margin: 16px 0;
+}
+
+.onboarding-navigation {
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  padding-top: 16px;
+  margin-top: 16px;
+}
+
+.onboarding-button {
+  background: linear-gradient(135deg, #17e2c3, #23227e);
+  border: none;
+  border-radius: 8px;
+  color: white;
+  font-weight: 600;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 12px rgba(23, 226, 195, 0.3);
+}
+
+.onboarding-button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(23, 226, 195, 0.4);
+}
+
+.onboarding-button:disabled {
+  background: rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.5);
+  transform: none;
+  box-shadow: none;
+}
+
+.onboarding-skip-button {
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: rgba(255, 255, 255, 0.8);
+  border-radius: 6px;
+  transition: all 0.2s ease;
+}
+
+.onboarding-skip-button:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.3);
+  color: white;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .onboarding-modal {
+    margin: 16px;
+    max-width: calc(100vw - 32px);
+  }
+  
+  .onboarding-content {
+    font-size: 14px;
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .onboarding-spotlight {
+    border-color: #00ffff;
+    box-shadow: 
+      0 0 0 4px rgba(0, 255, 255, 0.5),
+      0 0 20px rgba(0, 255, 255, 0.7);
+  }
+  
+  .onboarding-modal {
+    background: #000000;
+    border-color: #00ffff;
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .onboarding-spotlight,
+  .onboarding-spotlight::before,
+  .onboarding-interactive-hint {
+    animation: none;
+  }
+  
+  .onboarding-button {
+    transition: none;
+  }
+  
+  .onboarding-button:hover {
+    transform: none;
+  }
+}

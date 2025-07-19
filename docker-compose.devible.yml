@@ -1,0 +1,96 @@
+# =============================================================================
+# Devible - Professional Max for Live IDE
+# Docker Launch Configuration
+# =============================================================================
+
+version: '3.8'
+
+services:
+  # Devible Frontend Application
+  devible:
+    build:
+      context: ./max-live-ide
+      dockerfile: Dockerfile
+    container_name: devible-app
+    ports:
+      - "3000:3000"
+      - "8000:8000"  # WebSocket for Live integration
+    environment:
+      - NODE_ENV=development
+      - REACT_APP_VERSION=2.0-beta
+      - REACT_APP_LIVE_API_URL=ws://localhost:8000
+      - REACT_APP_API_BASE_URL=http://localhost:3000
+      - CHOKIDAR_USEPOLLING=true  # For hot reload in Docker
+    volumes:
+      - ./max-live-ide:/app
+      - devible_node_modules:/app/node_modules
+      - devible_patches:/app/data/patches
+      - devible_templates:/app/data/templates
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+    networks:
+      - devible-network
+
+  # Redis for session storage and caching
+  redis:
+    image: redis:7-alpine
+    container_name: devible-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - devible_redis:/data
+    command: redis-server --appendonly yes --maxmemory 128mb --maxmemory-policy allkeys-lru
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+    networks:
+      - devible-network
+
+  # File storage for patches and templates
+  minio:
+    image: minio/minio:latest
+    container_name: devible-storage
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    environment:
+      - MINIO_ROOT_USER=devible
+      - MINIO_ROOT_PASSWORD=devible-storage-password
+    volumes:
+      - devible_storage:/data
+    command: server /data --console-address ":9001"
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    networks:
+      - devible-network
+
+volumes:
+  devible_node_modules:
+    driver: local
+  devible_patches:
+    driver: local
+  devible_templates:
+    driver: local
+  devible_redis:
+    driver: local
+  devible_storage:
+    driver: local
+
+networks:
+  devible-network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.25.0.0/16

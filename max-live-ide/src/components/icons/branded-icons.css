@@ -1,0 +1,453 @@
+/* Devible Branded Icons CSS
+   Advanced styling for enhanced SVG icons with branding elements */
+
+/* === BRAND COLOR VARIABLES === */
+:root {
+  /* Primary Brand Colors */
+  --devible-primary-50: #eff6ff;
+  --devible-primary-100: #dbeafe;
+  --devible-primary-200: #bfdbfe;
+  --devible-primary-300: #93c5fd;
+  --devible-primary-400: #60a5fa;
+  --devible-primary-500: #3b82f6;
+  --devible-primary-600: #2563eb;
+  --devible-primary-700: #1d4ed8;
+  --devible-primary-800: #1e40af;
+  --devible-primary-900: #1e3a8a;
+
+  /* Secondary Brand Colors */
+  --devible-secondary-50: #faf5ff;
+  --devible-secondary-100: #f3e8ff;
+  --devible-secondary-200: #e9d5ff;
+  --devible-secondary-300: #d8b4fe;
+  --devible-secondary-400: #c084fc;
+  --devible-secondary-500: #a855f7;
+  --devible-secondary-600: #9333ea;
+  --devible-secondary-700: #7c3aed;
+  --devible-secondary-800: #6b21a8;
+  --devible-secondary-900: #581c87;
+
+  /* Tertiary Brand Colors */
+  --devible-tertiary-50: #ecfeff;
+  --devible-tertiary-100: #cffafe;
+  --devible-tertiary-200: #a5f3fc;
+  --devible-tertiary-300: #67e8f9;
+  --devible-tertiary-400: #22d3ee;
+  --devible-tertiary-500: #06b6d4;
+  --devible-tertiary-600: #0891b2;
+  --devible-tertiary-700: #0e7490;
+  --devible-tertiary-800: #155e75;
+  --devible-tertiary-900: #164e63;
+
+  /* Status Colors */
+  --devible-success: #10b981;
+  --devible-warning: #f59e0b;
+  --devible-error: #ef4444;
+  --devible-info: #3b82f6;
+
+  /* Neutral Colors */
+  --devible-neutral-50: #f8fafc;
+  --devible-neutral-100: #f1f5f9;
+  --devible-neutral-200: #e2e8f0;
+  --devible-neutral-300: #cbd5e1;
+  --devible-neutral-400: #94a3b8;
+  --devible-neutral-500: #64748b;
+  --devible-neutral-600: #475569;
+  --devible-neutral-700: #334155;
+  --devible-neutral-800: #1e293b;
+  --devible-neutral-900: #0f172a;
+}
+
+/* === BASE ICON STYLES === */
+.devible-icon {
+  display: inline-block;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  vertical-align: middle;
+}
+
+.devible-icon:hover {
+  transform: scale(1.05);
+}
+
+/* === BRANDED ICON SPECIFIC STYLES === */
+.branded-icon {
+  position: relative;
+}
+
+.branded-icon::after {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  background: linear-gradient(45deg, 
+    var(--devible-primary-500), 
+    var(--devible-secondary-500), 
+    var(--devible-tertiary-500)
+  );
+  border-radius: 50%;
+  opacity: 0;
+  z-index: -1;
+  transition: opacity 0.3s ease;
+}
+
+.branded-icon:hover::after {
+  opacity: 0.2;
+}
+
+/* === LOGO STYLES === */
+.devible-logo {
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.1));
+  transition: all 0.3s ease;
+}
+
+.devible-logo:hover {
+  transform: scale(1.05) rotate(1deg);
+  filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.15));
+}
+
+.devible-logo-glow {
+  animation: logoGlow 3s ease-in-out infinite alternate;
+}
+
+@keyframes logoGlow {
+  from {
+    filter: drop-shadow(0 4px 8px rgba(59, 130, 246, 0.3));
+  }
+  to {
+    filter: drop-shadow(0 8px 16px rgba(168, 85, 247, 0.4));
+  }
+}
+
+/* === PLAY ICON STYLES === */
+.devible-play-icon {
+  cursor: pointer;
+}
+
+.devible-play-icon:hover {
+  transform: scale(1.1);
+  filter: drop-shadow(0 4px 8px rgba(59, 130, 246, 0.4));
+}
+
+.devible-play-icon:active {
+  transform: scale(0.95);
+}
+
+/* === RECORD ICON STYLES === */
+.devible-record-icon {
+  cursor: pointer;
+}
+
+.devible-record-icon:hover {
+  filter: drop-shadow(0 0 16px rgba(239, 68, 68, 0.6));
+}
+
+.devible-record-icon.recording {
+  animation: recordPulse 2s ease-in-out infinite;
+}
+
+@keyframes recordPulse {
+  0%, 100% {
+    filter: drop-shadow(0 0 8px rgba(239, 68, 68, 0.4));
+  }
+  50% {
+    filter: drop-shadow(0 0 20px rgba(239, 68, 68, 0.8));
+  }
+}
+
+/* === MIXER ICON STYLES === */
+.devible-mixer-icon {
+  position: relative;
+}
+
+.devible-mixer-icon:hover {
+  filter: drop-shadow(0 2px 8px rgba(100, 116, 139, 0.3));
+}
+
+.devible-mixer-icon circle {
+  transition: all 0.2s ease;
+}
+
+.devible-mixer-icon:hover circle {
+  transform: scale(1.1);
+}
+
+/* === WAVEFORM ICON STYLES === */
+.devible-waveform-icon rect {
+  transform-origin: center bottom;
+  transition: all 0.3s ease;
+}
+
+.devible-waveform-icon:hover rect {
+  transform: scaleY(1.2);
+}
+
+.devible-waveform-icon.animated rect {
+  animation: waveformBounce 1.5s ease-in-out infinite;
+}
+
+@keyframes waveformBounce {
+  0%, 100% {
+    transform: scaleY(1);
+  }
+  50% {
+    transform: scaleY(0.7);
+  }
+}
+
+/* === STATUS ICON STYLES === */
+.devible-status-icon {
+  position: relative;
+}
+
+.status-connected {
+  color: var(--devible-success);
+}
+
+.status-disconnected {
+  color: var(--devible-error);
+}
+
+.status-warning {
+  color: var(--devible-warning);
+}
+
+.status-connected:hover {
+  filter: drop-shadow(0 0 8px rgba(16, 185, 129, 0.5));
+}
+
+.status-disconnected:hover {
+  filter: drop-shadow(0 0 8px rgba(239, 68, 68, 0.5));
+}
+
+.status-warning:hover {
+  filter: drop-shadow(0 0 8px rgba(245, 158, 11, 0.5));
+}
+
+/* === THEMED ICON STYLES === */
+.themed-icon {
+  transition: all 0.3s ease;
+}
+
+.theme-primary {
+  color: var(--devible-primary-500);
+}
+
+.theme-secondary {
+  color: var(--devible-secondary-500);
+}
+
+.theme-tertiary {
+  color: var(--devible-tertiary-500);
+}
+
+.theme-success {
+  color: var(--devible-success);
+}
+
+.theme-warning {
+  color: var(--devible-warning);
+}
+
+.theme-error {
+  color: var(--devible-error);
+}
+
+/* === INTERACTIVE STATES === */
+.devible-icon:focus {
+  outline: 2px solid var(--devible-primary-500);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+.devible-icon:focus:not(:focus-visible) {
+  outline: none;
+}
+
+.devible-icon[aria-pressed="true"] {
+  transform: scale(0.95);
+  filter: brightness(0.9);
+}
+
+.devible-icon[disabled] {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none !important;
+}
+
+/* === SIZE VARIANTS === */
+.devible-icon-xs {
+  width: 16px;
+  height: 16px;
+}
+
+.devible-icon-sm {
+  width: 20px;
+  height: 20px;
+}
+
+.devible-icon-md {
+  width: 24px;
+  height: 24px;
+}
+
+.devible-icon-lg {
+  width: 32px;
+  height: 32px;
+}
+
+.devible-icon-xl {
+  width: 48px;
+  height: 48px;
+}
+
+/* === BUTTON INTEGRATION === */
+.btn-devible-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+  border: none;
+  border-radius: 6px;
+  background: transparent;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-devible-icon:hover {
+  background: rgba(59, 130, 246, 0.1);
+  transform: translateY(-1px);
+}
+
+.btn-devible-icon:active {
+  transform: translateY(0);
+}
+
+.btn-devible-icon-primary {
+  background: var(--devible-primary-500);
+  color: white;
+}
+
+.btn-devible-icon-primary:hover {
+  background: var(--devible-primary-600);
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+}
+
+.btn-devible-icon-secondary {
+  background: var(--devible-secondary-500);
+  color: white;
+}
+
+.btn-devible-icon-secondary:hover {
+  background: var(--devible-secondary-600);
+  box-shadow: 0 4px 12px rgba(168, 85, 247, 0.3);
+}
+
+.btn-devible-icon-danger {
+  background: var(--devible-error);
+  color: white;
+}
+
+.btn-devible-icon-danger:hover {
+  background: #dc2626;
+  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+}
+
+/* === LOADING STATES === */
+.devible-icon-loading {
+  animation: iconSpin 1s linear infinite;
+}
+
+@keyframes iconSpin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* === ACCESSIBILITY === */
+@media (prefers-reduced-motion: reduce) {
+  .devible-icon,
+  .branded-icon,
+  .devible-logo,
+  .devible-play-icon,
+  .devible-record-icon,
+  .devible-mixer-icon circle,
+  .devible-waveform-icon rect,
+  .themed-icon {
+    animation: none;
+    transition: none;
+  }
+  
+  .devible-icon:hover,
+  .branded-icon:hover,
+  .devible-logo:hover {
+    transform: none;
+  }
+}
+
+/* === HIGH CONTRAST MODE === */
+@media (prefers-contrast: high) {
+  .devible-icon {
+    filter: contrast(2);
+  }
+  
+  .branded-icon::after {
+    display: none;
+  }
+}
+
+/* === DARK MODE SUPPORT === */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --devible-neutral-50: #0f172a;
+    --devible-neutral-100: #1e293b;
+    --devible-neutral-200: #334155;
+    --devible-neutral-300: #475569;
+    --devible-neutral-400: #64748b;
+    --devible-neutral-500: #94a3b8;
+    --devible-neutral-600: #cbd5e1;
+    --devible-neutral-700: #e2e8f0;
+    --devible-neutral-800: #f1f5f9;
+    --devible-neutral-900: #f8fafc;
+  }
+  
+  .devible-icon {
+    filter: brightness(1.1);
+  }
+  
+  .devible-logo {
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
+  }
+}
+
+/* === RESPONSIVE DESIGN === */
+@media (max-width: 768px) {
+  .devible-icon {
+    touch-action: manipulation;
+  }
+  
+  .btn-devible-icon {
+    min-height: 44px;
+    min-width: 44px;
+    padding: 12px;
+  }
+}
+
+/* === PRINT STYLES === */
+@media print {
+  .devible-icon {
+    filter: none !important;
+    animation: none !important;
+    transition: none !important;
+  }
+  
+  .branded-icon::after {
+    display: none;
+  }
+}

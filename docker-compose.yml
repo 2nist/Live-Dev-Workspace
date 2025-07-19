@@ -1,0 +1,346 @@
+# Docker Compose - Professional Microservices Architecture
+version: '3.8'
+
+services:
+  # Frontend Application
+  frontend:
+    build:
+      context: ./max-live-ide
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=development
+      - REACT_APP_API_URL=http://localhost:8000
+      - REACT_APP_WS_URL=ws://localhost:8080
+    volumes:
+      - ./max-live-ide:/app
+      - /app/node_modules
+    depends_on:
+      - api-gateway
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # API Gateway
+  api-gateway:
+    build:
+      context: ./services
+      dockerfile: Dockerfile.gateway
+    ports:
+      - "8000:8000"
+      - "8080:8080"  # WebSocket
+    environment:
+      - NODE_ENV=development
+      - JWT_SECRET=${JWT_SECRET:-fallback-secret}
+      - FRONTEND_URL=http://localhost:3000
+    volumes:
+      - ./services:/app
+      - /app/node_modules
+    depends_on:
+      - patch-service
+      - live-bridge
+      - template-service
+      - ai-service
+      - test-service
+      - redis
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Patch Management Service
+  patch-service:
+    build:
+      context: ./services
+      dockerfile: Dockerfile.patch
+    ports:
+      - "8001:8001"
+    environment:
+      - NODE_ENV=development
+      - DATABASE_URL=postgresql://alse:password@postgres:5432/alse_patches
+      - REDIS_URL=redis://redis:6379
+    volumes:
+      - ./services:/app
+      - ./data/patches:/app/data
+    depends_on:
+      - postgres
+      - redis
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8001/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Ableton Live Bridge Service
+  live-bridge:
+    build:
+      context: ./services
+      dockerfile: Dockerfile.live
+    ports:
+      - "8002:8002"
+    environment:
+      - NODE_ENV=development
+      - LIVE_API_PORT=9000
+      - REDIS_URL=redis://redis:6379
+    volumes:
+      - ./services:/app
+      - ./ableton-js:/app/ableton-js:ro
+    depends_on:
+      - redis
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8002/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Template Management Service
+  template-service:
+    build:
+      context: ./services
+      dockerfile: Dockerfile.templates
+    ports:
+      - "8003:8003"
+    environment:
+      - NODE_ENV=development
+      - DATABASE_URL=postgresql://alse:password@postgres:5432/alse_templates
+      - REDIS_URL=redis://redis:6379
+      - STORAGE_PATH=/app/data/templates
+    volumes:
+      - ./services:/app
+      - ./templates:/app/data/templates:ro
+      - ./data/imported-templates:/app/data/imported-templates
+    depends_on:
+      - postgres
+      - redis
+      - elasticsearch
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8003/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # AI Assistance Service
+  ai-service:
+    build:
+      context: ./services
+      dockerfile: Dockerfile.ai
+    ports:
+      - "8004:8004"
+    environment:
+      - NODE_ENV=development
+      - DATABASE_URL=postgresql://alse:password@postgres:5432/alse_ai
+      - REDIS_URL=redis://redis:6379
+      - AI_MODEL_PATH=/app/models
+    volumes:
+      - ./services:/app
+      - ./data/ai-models:/app/models
+    depends_on:
+      - postgres
+      - redis
+    restart: unless-stopped
+    deploy:
+      resources:
+        reservations:
+          memory: 2G
+        limits:
+          memory: 4G
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8004/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Testing & Validation Service
+  test-service:
+    build:
+      context: ./services
+      dockerfile: Dockerfile.test
+    ports:
+      - "8005:8005"
+    environment:
+      - NODE_ENV=development
+      - DATABASE_URL=postgresql://alse:password@postgres:5432/alse_tests
+      - REDIS_URL=redis://redis:6379
+      - AUDIO_DEVICE_ID=${AUDIO_DEVICE_ID:-default}
+    volumes:
+      - ./services:/app
+      - ./ableton-live-testing:/app/testing:ro
+      - ./data/test-results:/app/data/results
+    depends_on:
+      - postgres
+      - redis
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8005/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # PostgreSQL Database
+  postgres:
+    image: postgres:15-alpine
+    environment:
+      - POSTGRES_DB=alse
+      - POSTGRES_USER=alse
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_MULTIPLE_DATABASES=alse_patches,alse_templates,alse_ai,alse_tests
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./scripts/init-databases.sh:/docker-entrypoint-initdb.d/init-databases.sh:ro
+    ports:
+      - "5432:5432"
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U alse"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Redis Cache & Session Store
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    command: redis-server --appendonly yes --maxmemory 256mb --maxmemory-policy allkeys-lru
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Elasticsearch for Template Search
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.11.0
+    environment:
+      - discovery.type=single-node
+      - xpack.security.enabled=false
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    volumes:
+      - elasticsearch_data:/usr/share/elasticsearch/data
+    ports:
+      - "9200:9200"
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:9200/_cluster/health || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Monitoring - Prometheus
+  prometheus:
+    image: prom/prometheus:latest
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - prometheus_data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/etc/prometheus/console_libraries'
+      - '--web.console.templates=/etc/prometheus/consoles'
+      - '--web.enable-lifecycle'
+    restart: unless-stopped
+
+  # Monitoring - Grafana
+  grafana:
+    image: grafana/grafana:latest
+    ports:
+      - "3001:3000"
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./monitoring/grafana/dashboards:/etc/grafana/provisioning/dashboards:ro
+      - ./monitoring/grafana/datasources:/etc/grafana/provisioning/datasources:ro
+    depends_on:
+      - prometheus
+    restart: unless-stopped
+
+  # Log Aggregation - ELK Stack
+  elasticsearch-logs:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.11.0
+    environment:
+      - discovery.type=single-node
+      - xpack.security.enabled=false
+      - "ES_JAVA_OPTS=-Xms256m -Xmx256m"
+    volumes:
+      - elasticsearch_logs_data:/usr/share/elasticsearch/data
+    ports:
+      - "9201:9200"
+    restart: unless-stopped
+
+  logstash:
+    image: docker.elastic.co/logstash/logstash:8.11.0
+    volumes:
+      - ./monitoring/logstash/pipeline:/usr/share/logstash/pipeline:ro
+      - ./monitoring/logstash/config:/usr/share/logstash/config:ro
+    ports:
+      - "5000:5000"
+    depends_on:
+      - elasticsearch-logs
+    restart: unless-stopped
+
+  kibana:
+    image: docker.elastic.co/kibana/kibana:8.11.0
+    ports:
+      - "5601:5601"
+    environment:
+      - ELASTICSEARCH_HOSTS=http://elasticsearch-logs:9200
+    depends_on:
+      - elasticsearch-logs
+    restart: unless-stopped
+
+  # File Storage (MinIO S3-compatible)
+  minio:
+    image: minio/minio:latest
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    environment:
+      - MINIO_ACCESS_KEY=alse_access_key
+      - MINIO_SECRET_KEY=alse_secret_key_change_this
+    volumes:
+      - minio_data:/data
+    command: server /data --console-address ":9001"
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
+      interval: 30s
+      timeout: 20s
+      retries: 3
+
+volumes:
+  postgres_data:
+    driver: local
+  redis_data:
+    driver: local
+  elasticsearch_data:
+    driver: local
+  elasticsearch_logs_data:
+    driver: local
+  prometheus_data:
+    driver: local
+  grafana_data:
+    driver: local
+  minio_data:
+    driver: local
+
+networks:
+  default:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16

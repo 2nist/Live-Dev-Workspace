@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D Max Objects Preview</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            background: #1a1a1a;
+            color: white;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            padding: 20px;
+        }
+
+        .demo-section {
+            margin-bottom: 40px;
+        }
+
+        .demo-section h2 {
+            color: #00ff88;
+            margin-bottom: 20px;
+        }
+
+        /* 3D Max Object Styling */
+        .react-flow__node-max-object {
+            /* 3D Base Styling */
+            background: linear-gradient(135deg, #4a4a4a 0%, #2d2d2d 50%, #1a1a1a 100%);
+            border: 2px solid #666;
+            border-radius: 8px;
+            padding: 10px 12px;
+            min-width: 80px;
+            text-align: center;
+            font-family: 'Consolas', 'Monaco', 'Lucida Console', monospace;
+            font-size: 13px;
+            font-weight: 600;
+            display: inline-block;
+            margin: 10px;
+            
+            /* 3D Shadow Effects */
+            box-shadow: 
+                0 4px 8px rgba(0, 0, 0, 0.3),
+                0 2px 4px rgba(0, 0, 0, 0.2),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1),
+                inset 0 -1px 0 rgba(0, 0, 0, 0.3);
+            
+            /* High Contrast Text */
+            color: #ffffff;
+            text-shadow: 
+                0 1px 2px rgba(0, 0, 0, 0.8),
+                0 0 4px rgba(255, 255, 255, 0.1);
+            
+            /* Interactive States */
+            cursor: grab;
+            transition: all 0.2s ease;
+            position: relative;
+            
+            /* 3D Transform Effect */
+            transform: perspective(100px) rotateX(5deg);
+            transform-style: preserve-3d;
+        }
+
+        /* Hover State - Enhanced 3D Effect */
+        .react-flow__node-max-object:hover {
+            background: linear-gradient(135deg, #5a5a5a 0%, #3d3d3d 50%, #2a2a2a 100%);
+            box-shadow: 
+                0 6px 12px rgba(0, 0, 0, 0.4),
+                0 3px 6px rgba(0, 0, 0, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.15),
+                inset 0 -1px 0 rgba(0, 0, 0, 0.4);
+            
+            transform: perspective(100px) rotateX(5deg) translateY(-2px);
+            border-color: #777;
+        }
+
+        /* Selected State - Glowing Effect */
+        .react-flow__node-max-object.selected {
+            border-color: #00ff88;
+            background: linear-gradient(135deg, #4a5a4a 0%, #2d3d2d 50%, #1a2a1a 100%);
+            box-shadow: 
+                0 4px 8px rgba(0, 0, 0, 0.3),
+                0 2px 4px rgba(0, 0, 0, 0.2),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1),
+                inset 0 -1px 0 rgba(0, 0, 0, 0.3),
+                0 0 12px rgba(0, 255, 136, 0.4),
+                0 0 20px rgba(0, 255, 136, 0.2);
+            
+            color: #ffffff;
+            text-shadow: 
+                0 1px 2px rgba(0, 0, 0, 0.8),
+                0 0 4px rgba(0, 255, 136, 0.3);
+        }
+
+        /* Object Type Specific 3D Styling */
+        .react-flow__node-max-object.audio {
+            background: linear-gradient(135deg, #6a5a4a 0%, #4d3d2d 50%, #3a2a1a 100%);
+            border-color: #FFE4B5;
+            box-shadow: 
+                0 4px 8px rgba(0, 0, 0, 0.3),
+                0 2px 4px rgba(0, 0, 0, 0.2),
+                inset 0 1px 0 rgba(255, 228, 181, 0.2),
+                inset 0 -1px 0 rgba(0, 0, 0, 0.3),
+                0 0 8px rgba(255, 228, 181, 0.1);
+        }
+
+        .react-flow__node-max-object.midi {
+            background: linear-gradient(135deg, #5a4a6a 0%, #3d2d4d 50%, #2a1a3a 100%);
+            border-color: #DDA0DD;
+            box-shadow: 
+                0 4px 8px rgba(0, 0, 0, 0.3),
+                0 2px 4px rgba(0, 0, 0, 0.2),
+                inset 0 1px 0 rgba(221, 160, 221, 0.2),
+                inset 0 -1px 0 rgba(0, 0, 0, 0.3),
+                0 0 8px rgba(221, 160, 221, 0.1);
+        }
+
+        .react-flow__node-max-object.live-api {
+            background: linear-gradient(135deg, #6a4a5a 0%, #4d2d3d 50%, #3a1a2a 100%);
+            border-color: #FF69B4;
+            box-shadow: 
+                0 4px 8px rgba(0, 0, 0, 0.3),
+                0 2px 4px rgba(0, 0, 0, 0.2),
+                inset 0 1px 0 rgba(255, 105, 180, 0.2),
+                inset 0 -1px 0 rgba(0, 0, 0, 0.3),
+                0 0 8px rgba(255, 105, 180, 0.1);
+        }
+
+        .react-flow__node-max-object.utility {
+            background: linear-gradient(135deg, #4a5a6a 0%, #2d3d4d 50%, #1a2a3a 100%);
+            border-color: #87CEEB;
+            box-shadow: 
+                0 4px 8px rgba(0, 0, 0, 0.3),
+                0 2px 4px rgba(0, 0, 0, 0.2),
+                inset 0 1px 0 rgba(135, 206, 235, 0.2),
+                inset 0 -1px 0 rgba(0, 0, 0, 0.3),
+                0 0 8px rgba(135, 206, 235, 0.1);
+        }
+
+        /* Handle Styling */
+        .handle {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            display: inline-block;
+            margin: 0 2px;
+            
+            /* 3D Circular Handle Design */
+            background: radial-gradient(circle at 30% 30%, #ffffff, #888888, #333333);
+            border: 2px solid #222;
+            box-shadow: 
+                0 2px 4px rgba(0, 0, 0, 0.4),
+                inset 0 1px 0 rgba(255, 255, 255, 0.3),
+                inset 0 -1px 0 rgba(0, 0, 0, 0.5);
+            
+            transition: all 0.2s ease;
+        }
+
+        .handle.input {
+            background: radial-gradient(circle at 30% 30%, #88ff88, #44aa44, #226622);
+            border-color: #004400;
+        }
+
+        .handle.output {
+            background: radial-gradient(circle at 30% 30%, #ff8866, #aa4422, #662200);
+            border-color: #440000;
+        }
+
+        .comparison {
+            display: flex;
+            gap: 40px;
+            margin: 20px 0;
+        }
+
+        .old-style {
+            background: #f0f0f0;
+            border: 2px solid #333;
+            border-radius: 4px;
+            padding: 8px;
+            color: #333;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            min-width: 80px;
+            text-align: center;
+            display: inline-block;
+            margin: 10px;
+        }
+
+        .label {
+            font-size: 14px;
+            margin-bottom: 10px;
+            color: #ccc;
+        }
+    </style>
+</head>
+<body>
+    <h1>🎛️ 3D Max Objects Styling Preview</h1>
+    
+    <div class="demo-section">
+        <h2>Before vs After Comparison</h2>
+        <div class="comparison">
+            <div>
+                <div class="label">❌ Old Style (White on White - Hard to Read)</div>
+                <div class="old-style">osc~</div>
+                <div class="old-style">filter~</div>
+                <div class="old-style">live.dial</div>
+            </div>
+            <div>
+                <div class="label">✅ New 3D Style (High Contrast - Easy to Read)</div>
+                <div class="react-flow__node-max-object">osc~</div>
+                <div class="react-flow__node-max-object">filter~</div>
+                <div class="react-flow__node-max-object">live.dial</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="demo-section">
+        <h2>Interactive States</h2>
+        <div class="container">
+            <div class="react-flow__node-max-object">Default State</div>
+            <div class="react-flow__node-max-object selected">Selected State</div>
+        </div>
+        <p><em>Hover over objects to see the enhanced 3D effect!</em></p>
+    </div>
+
+    <div class="demo-section">
+        <h2>Object Type Categories</h2>
+        <div class="container">
+            <div class="react-flow__node-max-object audio">cycle~</div>
+            <div class="react-flow__node-max-object audio">filter~</div>
+            <div class="react-flow__node-max-object audio">delay~</div>
+            
+            <div class="react-flow__node-max-object midi">makenote</div>
+            <div class="react-flow__node-max-object midi">noteout</div>
+            <div class="react-flow__node-max-object midi">pgmout</div>
+            
+            <div class="react-flow__node-max-object live-api">live.dial</div>
+            <div class="react-flow__node-max-object live-api">live.slider</div>
+            <div class="react-flow__node-max-object live-api">live.button</div>
+            
+            <div class="react-flow__node-max-object utility">print</div>
+            <div class="react-flow__node-max-object utility">metro</div>
+            <div class="react-flow__node-max-object utility">counter</div>
+        </div>
+    </div>
+
+    <div class="demo-section">
+        <h2>3D Connection Handles</h2>
+        <div class="container">
+            <div class="react-flow__node-max-object">
+                <div class="handle input"></div>
+                <div>inlet</div>
+                <div style="margin: 8px 0;">object~</div>
+                <div class="handle output"></div>
+                <div>outlet</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="demo-section">
+        <h2>Key Improvements</h2>
+        <ul style="max-width: 600px; line-height: 1.6;">
+            <li><strong>High Contrast Text:</strong> White text with dark background and text shadows for maximum readability</li>
+            <li><strong>3D Gradient Backgrounds:</strong> Multi-stop gradients create depth and dimension</li>
+            <li><strong>Layered Box Shadows:</strong> Multiple shadow layers simulate realistic 3D lighting</li>
+            <li><strong>Perspective Transform:</strong> Subtle 3D rotation gives objects physical presence</li>
+            <li><strong>Interactive Feedback:</strong> Hover and selection states enhance user experience</li>
+            <li><strong>Color-Coded Categories:</strong> Audio, MIDI, Live API, and Utility objects have distinct styling</li>
+            <li><strong>Enhanced Handles:</strong> 3D circular connection points with gradient effects</li>
+        </ul>
+    </div>
+
+    <script>
+        // Add some interactivity
+        document.querySelectorAll('.react-flow__node-max-object').forEach(node => {
+            node.addEventListener('click', function() {
+                this.classList.toggle('selected');
+            });
+        });
+    </script>
+</body>
+</html>
