@@ -1,0 +1,59 @@
+/* JSCodeEditor Styles */
+
+.js-code-editor-modal .mantine-Modal-modal {
+  height: 80vh;
+}
+
+.js-code-editor-modal .mantine-Modal-body {
+  height: calc(80vh - 60px);
+  display: flex;
+  flex-direction: column;
+}
+
+.code-editor-panel {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.error-marker {
+  background-color: rgba(255, 0, 0, 0.2);
+  border-left: 3px solid #ff0000;
+}
+
+.warning-marker {
+  background-color: rgba(255, 165, 0, 0.2);
+  border-left: 3px solid #ffa500;
+}
+
+.info-marker {
+  background-color: rgba(0, 123, 255, 0.2);
+  border-left: 3px solid #007bff;
+}
+
+.ai-suggestion-item {
+  padding: 8px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.ai-suggestion-item:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.code-template-button {
+  min-width: 100px;
+}
+
+.nl-prompt-textarea {
+  font-family: system-ui, -apple-system, sans-serif;
+}
+
+.quick-reference-code {
+  background-color: rgba(255, 255, 255, 0.1);
+  padding: 2px 6px;
+  border-radius: 3px;
+  font-family: 'Courier New', monospace;
+  font-size: 12px;
+}

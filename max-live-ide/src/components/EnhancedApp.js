@@ -8,6 +8,7 @@ import SearchPanel from './SearchPanel';
 import LiveStatusPanel from './LiveStatusPanel';
 import DeviceManager from './DeviceManager';
 import ObjectTemplateBrowser from './ObjectTemplateBrowser';
+import JSCodeEditor from './JSCodeEditor';
 import '@xyflow/react/dist/style.css';
 import './EnhancedApp.css';
 
@@ -87,6 +88,8 @@ const EnhancedApp = ({ nodeTypes }) => {
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [selectedJSNode, setSelectedJSNode] = useState(null);
+  const [showCodeEditor, setShowCodeEditor] = useState(false);
 
   // Object & Template Browser
   const browserControls = useObjectTemplateBrowser();
@@ -129,6 +132,36 @@ const EnhancedApp = ({ nodeTypes }) => {
     (params) => setEdges((eds) => addEdge(params, eds)),
     [setEdges]
   );
+
+  // Handle node selection - detect JS objects and open editor
+  const onNodeClick = useCallback((event, node) => {
+    const isJSObject = node.data.label?.startsWith('js') || 
+                       node.data.label?.startsWith('jsui') ||
+                       node.data.objectType === 'javascript';
+    
+    if (isJSObject) {
+      setSelectedJSNode(node);
+      setShowCodeEditor(true);
+    }
+  }, []);
+
+  // Handle code changes from editor
+  const handleCodeChange = useCallback((nodeId, newCode) => {
+    setNodes((nds) =>
+      nds.map((node) =>
+        node.id === nodeId
+          ? {
+              ...node,
+              data: {
+                ...node.data,
+                jsCode: newCode,
+                lastModified: Date.now()
+              }
+            }
+          : node
+      )
+    );
+  }, [setNodes]);
 
   const handleDeviceAdd = useCallback((device) => {
     const newNode = {
@@ -268,6 +301,7 @@ const EnhancedApp = ({ nodeTypes }) => {
             onNodesChange={onNodesChange}
             onEdgesChange={onEdgesChange}
             onConnect={onConnect}
+            onNodeClick={onNodeClick}
             nodeTypes={nodeTypes}
             viewport={viewport}
             onViewportChange={setViewport}
@@ -282,6 +316,18 @@ const EnhancedApp = ({ nodeTypes }) => {
             />
           </ReactFlow>
         </div>
+
+        {/* JavaScript Code Editor Modal */}
+        {showCodeEditor && selectedJSNode && (
+          <JSCodeEditor
+            node={selectedJSNode}
+            onCodeChange={handleCodeChange}
+            onClose={() => {
+              setShowCodeEditor(false);
+              setSelectedJSNode(null);
+            }}
+          />
+        )}
 
         {/* Object & Template Browser */}
         <ObjectTemplateBrowser
