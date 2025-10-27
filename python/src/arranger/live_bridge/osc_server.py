@@ -9,16 +9,25 @@ from pythonosc.osc_server import ThreadingOSCUDPServer
 from pythonosc import udp_client
 from arranger.api import theory, live_integration, analysis
 from arranger.live_bridge.live_bridge import SceneManager, ChordClipFactory, PlaybackScheduler
+from arranger.live_bridge.ableton_connection import AbletonConnection
 
 class ArrangerOSCServer:
-    def __init__(self, ip="127.0.0.1", port=12000, reply_port=12001):
+    def __init__(self, ip="127.0.0.1", port=12000, reply_port=12001, 
+                 ableton_host="127.0.0.1", ableton_port=11000, use_live=False):
         self.dispatcher = Dispatcher()
         self.server = ThreadingOSCUDPServer((ip, port), self.dispatcher)
         self.client = udp_client.SimpleUDPClient(ip, reply_port)
-        # Initialize Live bridge components
-        self.scene_manager = SceneManager()
-        self.clip_factory = ChordClipFactory()
-        self.playback_scheduler = PlaybackScheduler()
+        
+        # Initialize Ableton connection if requested
+        if use_live:
+            self.ableton = AbletonConnection(ableton_host, ableton_port)
+        else:
+            self.ableton = AbletonConnection(mock=True)
+        
+        # Initialize Live bridge components with connection
+        self.scene_manager = SceneManager(self.ableton)
+        self.clip_factory = ChordClipFactory(self.ableton)
+        self.playback_scheduler = PlaybackScheduler(self.ableton)
         self._register_handlers()
 
     def _register_handlers(self):

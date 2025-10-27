@@ -118,8 +118,12 @@ class TestLiveBridgeIntegration:
     def test_scene_manager_create_and_list(self):
         """Test SceneManager creates scenes and lists them."""
         from arranger.live_bridge.live_bridge import SceneManager
+        from arranger.live_bridge.ableton_connection import AbletonConnection
         
-        sm = SceneManager()
+        # Use mock connection
+        conn = AbletonConnection(mock=True)
+        sm = SceneManager(conn)
+        
         idx = sm.create_scene("Intro", [{"track": 1, "clip": "drums"}])
         assert idx == 0
         
@@ -132,8 +136,12 @@ class TestLiveBridgeIntegration:
     def test_chord_clip_factory_creates_clip(self):
         """Test ChordClipFactory generates MIDI notes."""
         from arranger.live_bridge.live_bridge import ChordClipFactory
+        from arranger.live_bridge.ableton_connection import AbletonConnection
         
-        ccf = ChordClipFactory()
+        # Use mock connection
+        conn = AbletonConnection(mock=True)
+        ccf = ChordClipFactory(conn)
+        
         result = ccf.create_chord_clip("Dm7", 4, 2)
         
         assert result["track"] == 2
@@ -142,14 +150,43 @@ class TestLiveBridgeIntegration:
         # Dm7 = D, F, A, C (notes should be present, specific octave may vary)
         # Just check we got 4 notes for a 7th chord
         assert len(result["notes"]) == 4
+        assert result["connected"] == False  # Mock mode
     
     def test_playback_scheduler_schedules_order(self):
         """Test PlaybackScheduler maintains playback order."""
         from arranger.live_bridge.live_bridge import PlaybackScheduler
+        from arranger.live_bridge.ableton_connection import AbletonConnection
         
-        ps = PlaybackScheduler()
+        # Use mock connection
+        conn = AbletonConnection(mock=True)
+        ps = PlaybackScheduler(conn)
+        
         order = ["Intro", "Verse", "Chorus", "Verse", "Bridge", "Chorus"]
         result = ps.schedule_playback(order)
         
         assert result["status"] == "scheduled"
+        assert result["connected"] == False  # Mock mode
         assert ps.get_current_order() == order
+    
+    def test_ableton_connection_mock_mode(self):
+        """Test AbletonConnection works in mock mode."""
+        from arranger.live_bridge.ableton_connection import AbletonConnection
+        
+        conn = AbletonConnection(mock=True)
+        
+        assert not conn.is_connected()
+        assert conn.mock == True
+        
+        # Test methods work in mock mode
+        tempo = conn.get_tempo()
+        assert tempo == 120.0
+        
+        time_sig = conn.get_time_signature()
+        assert time_sig == (4, 4)
+        
+        # Methods should not raise errors
+        conn.play()
+        conn.stop()
+        conn.set_tempo(130.0)
+        
+        conn.close()
