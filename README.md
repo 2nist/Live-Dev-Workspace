@@ -4,6 +4,7 @@ A comprehensive development workspace for Ableton Live integration featuring vis
 
 ## 🎯 What's Included
 
+- **Python Integration**: Unified Python API combining pylive and AbletonOSC
 - **Ableton-JS**: TypeScript API for Live communication
 - **Max Live IDE**: React-based visual patching environment  
 - **LATE**: Live Automated Testing Environment
@@ -11,20 +12,26 @@ A comprehensive development workspace for Ableton Live integration featuring vis
 
 ## ⚡ Quick Start
 
-1. **Install Dependencies**
+1. **Install Python Integration**
+   ```bash
+   cd python
+   pip install -e .
+   # Or use the install script: ./install.sh (macOS/Linux) or install.bat (Windows)
+   ```
+
+2. **Install JavaScript Dependencies**
    ```bash
    cd ableton-js && npm install
    cd ../max-live-ide && npm install
-   cd ../ableton-live-testing && pip install -r requirements.txt
    ```
 
-2. **Run Quick Test**
+3. **Run Quick Test**
    ```bash
-   cd ableton-live-testing/harness
-   python quick_ide_test.py
+   cd python/examples
+   python 01_basic_connection.py
    ```
 
-3. **Launch IDE**
+4. **Launch IDE**
    ```bash
    cd max-live-ide
    npm start
@@ -32,6 +39,8 @@ A comprehensive development workspace for Ableton Live integration featuring vis
 
 ## 📖 Documentation
 
+- **[Python Integration Guide](python/README.md)**: Python API for M4L development
+- **[Python Examples](python/examples/)**: Comprehensive example scripts
 - **[Development Guide](DEVELOPMENT_GUIDE.md)**: Complete setup and usage
 - **[Test Plans](ableton-live-testing/docs/test_plans.md)**: Testing strategy
 - **[API Documentation](ableton-js/src/)**: JSDoc inline documentation
@@ -46,11 +55,14 @@ Latest test run: ✅ 4/5 tests passing (80% success rate)
 
 ## 🚀 Features
 
-- Visual drag-and-drop Max patching
-- Real-time Ableton Live synchronization
-- Automated testing framework
-- Template library for common devices
-- Import/export .maxpat and .amxd files
+- **Python Control**: Comprehensive Python API for Live and M4L device development
+- **Visual Max Patching**: Drag-and-drop Max for Live IDE
+- **Real-time Synchronization**: Bidirectional Live communication
+- **MIDI Generation**: Programmatic clip and note creation
+- **Device Control**: Query and modify device parameters
+- **Automated Testing**: Complete testing framework
+- **Template Library**: Ready-to-use device templates
+- **Import/Export**: .maxpat and .amxd file support
 
 ## 🛠️ Requirements
 
