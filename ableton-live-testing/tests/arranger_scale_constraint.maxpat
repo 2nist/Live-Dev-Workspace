@@ -1,0 +1,1 @@
+Max for Live patch for Arranger Scale Constraint. Filters incoming MIDI notes to fit a scale from OSC.

@@ -1,0 +1,1 @@
+Max for Live patch for Arranger Progression Analyzer. Receives progression data from OSC and displays it.

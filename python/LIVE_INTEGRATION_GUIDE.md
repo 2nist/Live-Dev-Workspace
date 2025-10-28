@@ -222,6 +222,30 @@ server = ArrangerOSCServer(
 server.serve_forever()
 ```
 
+### Run the OSC server from CLI
+
+Recommended (macOS):
+
+```bash
+# From repo root
+export PYTHONPATH="$PWD/python/src"
+./.venv/bin/python python/src/arranger/live_bridge/osc_server.py --ip 127.0.0.1 --port 12000 --reply 12001 --use-live
+```
+
+Mock mode (no Live required):
+
+```bash
+export PYTHONPATH="$PWD/python/src"
+./.venv/bin/python python/src/arranger/live_bridge/osc_server.py --ip 127.0.0.1 --port 12000 --reply 12001
+```
+
+Quick demo client (sends a few messages):
+
+```bash
+export PYTHONPATH="$PWD/python/src"
+./.venv/bin/python python/examples/osc_client_demo.py
+```
+
 Now OSC messages will create actual scenes and clips in Live:
 
 ```python
@@ -235,6 +259,29 @@ client.send_message("/live/create_scene", ["Verse1", "drums", "bass"])
 # Create chord clip in Live
 client.send_message("/live/create_chord_clip", ["Cmaj7", 4, 0])
 ```
+
+### Endpoints Quick Reference
+
+- Transport
+    - `/live/play`
+    - `/live/stop`
+    - `/live/set_tempo <float>`
+    - `/live/get_tempo`
+    - `/live/get_time_signature`
+- Scenes
+    - `/live/create_scene <name> [clipNames...]`
+    - `/live/create_scene_index <index>` (use `-1` to append)
+    - `/live/trigger_scene <index>`
+- Clips
+    - `/live/clip/create <track:int> <scene:int> <length:float>`
+    - `/live/clip/add_note <track:int> <scene:int> <pitch:int> <start:float> <dur:float> <vel:int>`
+- Tracks
+    - `/live/track/set/volume <track:int> <volume:0..1>`
+    - `/live/track/get/volume <track:int>`
+    - `/live/track/set/pan <track:int> <pan:-1..1>`
+    - `/live/track/set/mute <track:int> <0|1>`
+    - `/live/track/set/solo <track:int> <0|1>`
+    - `/live/track/set/arm <track:int> <0|1>`
 
 ## AbletonConnection API Reference
 
@@ -337,16 +384,14 @@ client.send_message("/live/create_chord_clip", ["Cmaj7", 4, 0])
 
 ## Testing
 
-Run integration tests:
+Run the Python tests (uses unittest):
 ```bash
-pytest python/tests/test_arranger/integration/ -v
+./.venv/bin/python -m unittest discover -s python/tests -p 'test_*.py' -v
 ```
 
-Current test coverage:
-- 44 total tests (32 unit + 12 integration)
-- All tests support both mock and live modes
-- AbletonConnection tested in mock mode
-- Full Live bridge integration tested
+Included tests:
+- Mock-mode Live bridge integration (transport, scenes, clips, scheduler)
+- OSC server smoke test (binds and accepts theory messages)
 
 ## Next Steps
 

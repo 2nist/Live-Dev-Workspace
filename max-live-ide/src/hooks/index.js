@@ -462,11 +462,14 @@ export const useLiveStatus = (webSocketUrl = 'ws://localhost:8080', httpUrl = 'h
       };
 
       wsRef.current.onclose = () => {
-        console.log('Disconnected from Ableton Live');
+        // Only log on first disconnect
+        if (isConnected) {
+          console.log('Disconnected from Ableton Live');
+        }
         setIsConnected(false);
         setConnectionState('disconnected');
         
-        // Attempt reconnection
+        // Attempt reconnection with backoff
         if (reconnectAttempts.current < maxReconnectAttempts) {
           reconnectAttempts.current++;
           const delay = Math.min(1000 * Math.pow(2, reconnectAttempts.current), 10000);
@@ -474,13 +477,21 @@ export const useLiveStatus = (webSocketUrl = 'ws://localhost:8080', httpUrl = 'h
           reconnectTimeoutRef.current = setTimeout(() => {
             connect();
           }, delay);
+        } else if (reconnectAttempts.current === maxReconnectAttempts) {
+          console.log('ℹ️ Live WebSocket unavailable. IDE running in standalone mode.');
         }
       };
 
       wsRef.current.onerror = (error) => {
-        console.error('WebSocket error:', error);
+        // Suppress noisy errors when Live is not running
+        if (reconnectAttempts.current === 0) {
+          console.warn('⚠️ Ableton Live WebSocket not available (this is normal if Live is not running)');
+        }
         setConnectionState('error');
-        addError('WebSocket error', error.message || 'Connection failed');
+        // Don't add error to log on every failed reconnect
+        if (reconnectAttempts.current === 0) {
+          addError('WebSocket error', 'Live connection unavailable');
+        }
       };
 
     } catch (error) {

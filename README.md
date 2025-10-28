@@ -55,6 +55,7 @@ Latest test run: ✅ 4/5 tests passing (80% success rate)
 
 ## 🚀 Features
 
+### Core Features
 - **Python Control**: Comprehensive Python API for Live and M4L device development
 - **Visual Max Patching**: Drag-and-drop Max for Live IDE
 - **Real-time Synchronization**: Bidirectional Live communication
@@ -63,6 +64,19 @@ Latest test run: ✅ 4/5 tests passing (80% success rate)
 - **Automated Testing**: Complete testing framework
 - **Template Library**: Ready-to-use device templates
 - **Import/Export**: .maxpat and .amxd file support
+
+### 🎛️ **NEW: Hardware Controller Integration**
+
+- **Akai APC64**: 64 RGB pads, 8 encoders, 8 faders - full support
+- **Akai APC mini mk2**: 64 RGB pads, 8 faders, compact design - full support
+- **Ableton Push 2/3 Support**: Full RGB pad control with display integration
+- **Launchpad Integration**: Pro, X, and Mini models supported
+- **Visual Feedback**: Chord progressions and arrangements displayed on hardware
+- **Multiple Display Modes**: Chord, Section, and Scale visualization
+- **Auto-Sync**: Hardware follows your composition in real-time
+- **AI-Powered Composition**: Generate and visualize chords on hardware pads
+
+📖 **[Hardware Controller Guide](DOCS/HARDWARE_CONTROLLER_GUIDE.md)** | **[APC Quick Start](DOCS/APC_QUICK_START.md)** | **[Quick Reference](DOCS/HARDWARE_QUICK_REFERENCE.md)**
 
 ## 🛠️ Requirements
 

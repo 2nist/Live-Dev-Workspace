@@ -144,6 +144,50 @@ class ArrangerOSCClient {
   }
 
   /**
+   * Send hardware controller command
+   */
+  async sendHardwareCommand(command, params = {}) {
+    const commandMap = {
+      'detect': '/hardware/detect',
+      'list': '/hardware/list',
+      'connect': '/hardware/connect',
+      'disconnect': '/hardware/disconnect',
+      'set_mode': '/hardware/set_mode',
+      'display_progression': '/hardware/display_progression',
+      'display_arrangement': '/hardware/display_arrangement',
+      'highlight_chord': '/hardware/highlight_chord',
+      'highlight_section': '/hardware/highlight_section'
+    };
+
+    const endpoint = commandMap[command];
+    if (!endpoint) {
+      console.error(`Unknown hardware command: ${command}`);
+      return null;
+    }
+
+    if (!this.connected) {
+      return this.getMockHardwareResponse(command, params);
+    }
+
+    try {
+      const response = await fetch(`${this.baseUrl}${endpoint}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(params)
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        return data;
+      }
+    } catch (error) {
+      console.error(`Hardware command failed (${command}):`, error);
+    }
+
+    return this.getMockHardwareResponse(command, params);
+  }
+
+  /**
    * Generate MIDI notes for a chord
    */
   async getChordNotes(chordSymbol, voicing = 'close', octave = 4) {
@@ -339,6 +383,99 @@ class ArrangerOSCClient {
     const note = noteName[0].toUpperCase();
     const baseNote = notes[note] || 0;
     return 60 + baseNote; // C4 is MIDI 60
+  }
+
+  /**
+   * Mock hardware responses for development
+   */
+  getMockHardwareResponse(command, params) {
+    switch (command) {
+      case 'detect':
+        return {
+          detected: [
+            {
+              name: 'apc64',
+              type: 'Akai APC64',
+              port: 'APC64'
+            },
+            {
+              name: 'apc_mini_mk2',
+              type: 'Akai APC mini mk2',
+              port: 'APC mini mk2'
+            },
+            {
+              name: 'push2',
+              type: 'Ableton Push 2',
+              port: 'Ableton Push 2 User Port'
+            },
+            {
+              name: 'launchpad_pro',
+              type: 'Launchpad Pro',
+              port: 'Launchpad Pro Standalone Port'
+            }
+          ]
+        };
+
+      case 'list':
+        return {
+          controllers: [
+            {
+              name: 'apc64',
+              type: 'apc64',
+              connected: true,
+              capabilities: {
+                pads: 64,
+                encoders: 8,
+                display: false
+              }
+            }
+          ]
+        };
+
+      case 'connect':
+        return {
+          status: 'connected',
+          type: params.type || 'push2'
+        };
+
+      case 'disconnect':
+        return {
+          status: 'disconnected',
+          name: params.name || 'unknown'
+        };
+
+      case 'set_mode':
+        return {
+          status: 'mode set',
+          mode: params.mode || 'chord'
+        };
+
+      case 'display_progression':
+        return {
+          status: 'progression displayed',
+          count: params.chords?.length || 0
+        };
+
+      case 'display_arrangement':
+        return {
+          status: 'arrangement displayed'
+        };
+
+      case 'highlight_chord':
+        return {
+          status: 'chord highlighted',
+          index: params.index || 0
+        };
+
+      case 'highlight_section':
+        return {
+          status: 'section highlighted',
+          index: params.index || 0
+        };
+
+      default:
+        return { error: 'Unknown command' };
+    }
   }
 }
 

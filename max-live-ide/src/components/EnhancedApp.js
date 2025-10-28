@@ -1,7 +1,7 @@
 import React, { useState, useCallback } from 'react';
 import { ReactFlow, Background, Controls, MiniMap, useNodesState, useEdgesState, addEdge } from '@xyflow/react';
-import { Group, Button, Paper, Text, Badge, Title } from '@mantine/core';
-import { IconSearch, IconDevices, IconInfoCircle, IconBook, IconTemplate } from '@tabler/icons-react';
+import { Group, Button, Paper, Text, Badge, Title, ActionIcon, Drawer } from '@mantine/core';
+import { IconSearch, IconDevices, IconInfoCircle, IconBook, IconTemplate, IconRobot, IconMessage } from '@tabler/icons-react';
 import { useCanvasNavigation, useDeviceSearch, useLiveStatus } from '../hooks';
 import { useObjectTemplateBrowser, useObjectBrowserShortcuts, useObjectInsertion } from '../hooks/useObjectTemplateBrowser';
 import SearchPanel from './SearchPanel';
@@ -9,6 +9,8 @@ import LiveStatusPanel from './LiveStatusPanel';
 import DeviceManager from './DeviceManager';
 import ObjectTemplateBrowser from './ObjectTemplateBrowser';
 import JSCodeEditor from './JSCodeEditor';
+import { AIChatPanel } from './AIChatPanel';
+import { GettingStartedModal, shouldShowGettingStarted } from './GettingStartedModal';
 import '@xyflow/react/dist/style.css';
 import './EnhancedApp.css';
 
@@ -90,6 +92,8 @@ const EnhancedApp = ({ nodeTypes }) => {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [selectedJSNode, setSelectedJSNode] = useState(null);
   const [showCodeEditor, setShowCodeEditor] = useState(false);
+  const [showAIChat, setShowAIChat] = useState(false);
+  const [showGettingStarted, setShowGettingStarted] = useState(shouldShowGettingStarted());
 
   // Object & Template Browser
   const browserControls = useObjectTemplateBrowser();
@@ -243,6 +247,15 @@ const EnhancedApp = ({ nodeTypes }) => {
     return () => document.removeEventListener('keydown', handleKeyDown);
   }, [handleKeyDown]);
 
+  const handleStartTutorial = (prompt) => {
+    setShowAIChat(true);
+    // The AIChatPanel will need to accept an initial message prop
+    // Store the tutorial prompt to send when chat opens
+    setTimeout(() => {
+      // This will be handled by AIChatPanel when it receives initialPrompt
+    }, 100);
+  };
+
   return (
     <div className="enhanced-app">
       {/* Header with controls */}
@@ -266,6 +279,14 @@ const EnhancedApp = ({ nodeTypes }) => {
             >
               Object Browser (Ctrl+Shift+O)
             </Button>
+            <ActionIcon
+              variant="light"
+              size="lg"
+              onClick={() => setShowAIChat(!showAIChat)}
+              title="AI Assistant"
+            >
+              <IconRobot size={20} />
+            </ActionIcon>
           </Group>
           <LiveStatusPanel 
             isConnected={isConnected}
@@ -337,13 +358,70 @@ const EnhancedApp = ({ nodeTypes }) => {
           onClose={browserControls.closeBrowser}
         />
 
+        {/* AI Chat Panel */}
+        <Drawer
+          opened={showAIChat}
+          onClose={() => setShowAIChat(false)}
+          title="AI Assistant"
+          position="right"
+          size="xl"
+          padding="md"
+        >
+          <AIChatPanel
+            currentPatch={{ nodes, edges }}
+            onInsertCode={(code) => {
+              // Insert code into a new js object
+              const newNode = {
+                id: `node-${Date.now()}`,
+                type: 'maxObject',
+                position: { x: viewport.x + 300, y: viewport.y + 200 },
+                data: {
+                  label: 'js',
+                  objectType: 'javascript',
+                  jsCode: code,
+                  lastModified: Date.now()
+                }
+              };
+              setNodes((nds) => [...nds, newNode]);
+            }}
+            onCreateObject={(object) => {
+              // Create a new object from AI suggestion
+              const newNode = {
+                id: `node-${Date.now()}`,
+                type: 'maxObject',
+                position: { x: viewport.x + 300, y: viewport.y + 200 },
+                data: {
+                  label: object.type,
+                  objectType: object.category || 'utility',
+                  ...object
+                }
+              };
+              setNodes((nds) => [...nds, newNode]);
+            }}
+          />
+        </Drawer>
+
+        {/* Getting Started Modal */}
+        <GettingStartedModal
+          opened={showGettingStarted}
+          onClose={() => setShowGettingStarted(false)}
+          onStartTutorial={handleStartTutorial}
+        />
+
         {/* Device Manager Panel */}
         <DeviceManager 
           nodes={nodes}
           onNodeFocus={(nodeId) => jumpToNode(nodeId, nodes)}
-          onNodeDelete={(nodeId) => 
-            setNodes((nds) => nds.filter((n) => n.id !== nodeId))
-          }
+          onNodeDelete={(nodeId) => setNodes((nds) => nds.filter((n) => n.id !== nodeId))}
+          onStatusUpdate={(nodeId, newStatus) => {
+            setNodes((nds) =>
+              nds.map((node) =>
+                node.id === nodeId
+                  ? { ...node, data: { ...node.data, status: newStatus } }
+                  : node
+              )
+            );
+          }}
         />
       </div>
 

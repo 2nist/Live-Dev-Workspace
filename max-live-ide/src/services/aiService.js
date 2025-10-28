@@ -522,6 +522,120 @@ function msg_float(prob) {
     // Placeholder for AI fix generation
     return null;
   }
+
+  /**
+   * Chat interface for conversational AI assistance
+   */
+  async chat({ messages, context, mode = 'general' }) {
+    const lastMessage = messages[messages.length - 1]?.content?.toLowerCase() || '';
+    
+    // M4L-specific responses
+    const m4lResponses = {
+      'midi': {
+        message: "For MIDI processing in M4L, you'll want to use these objects:\n\n• **notein** - Receives MIDI notes\n• **noteout** - Sends MIDI notes\n• **makenote** - Creates note on/off pairs\n• **midiparse** - Parses raw MIDI\n\nWould you like me to show you a complete MIDI effect example?",
+        suggestions: [
+          { text: 'Show MIDI effect example', action: 'example', type: 'midi-effect' },
+          { text: 'Create notein object', action: 'create', object: { type: 'notein' } }
+        ]
+      },
+      'live api': {
+        message: "The Live API lets you control Live from Max. Here's the basic approach:\n\n1. Use **live.path** to navigate to objects\n2. Use **live.object** to get/set properties\n3. Use **live.observer** to monitor changes\n\nExample path: `live_set tracks 0 devices 0`\n\nWhat would you like to control?",
+        suggestions: [
+          { text: 'Show Live API example', action: 'example', type: 'live-api' },
+          { text: 'Create live.path', action: 'create', object: { type: 'live.path' } }
+        ]
+      },
+      'javascript': {
+        message: "JavaScript in Max is powerful! The **js** object runs JavaScript code with:\n\n• Full Max messaging system\n• Inlets and outlets for data flow\n• Access to Max objects via JSAdapter\n\nWould you like me to generate a JavaScript template for you?",
+        codeBlocks: [
+          {
+            language: 'javascript',
+            code: `inlets = 1;
+outlets = 1;
+
+function msg_int(v) {
+    // Process numbers
+    outlet(0, v * 2);
+}
+
+function bang() {
+    post("Hello from JS!\\n");
+}`
+          }
+        ],
+        suggestions: [
+          { text: 'Generate custom JS code', action: 'generate' }
+        ]
+      },
+      'audio': {
+        message: "For audio processing in M4L:\n\n• **plugin~** - Audio in/out from Live\n• **live.gain~** - Volume control with meter\n• **biquad~** - Flexible filter\n• **pfft~** - FFT processing\n\nAudio objects end with **~**. What kind of audio effect are you building?",
+        suggestions: [
+          { text: 'Show audio effect example', action: 'example', type: 'audio-effect' }
+        ]
+      },
+      'arpeggiator': {
+        message: "I can help you create an arpeggiator! Here's a simple example:",
+        codeBlocks: [
+          {
+            language: 'javascript',
+            code: `inlets = 2;  // [0] notes, [1] bang to advance
+outlets = 1;
+
+var notes = [];
+var currentIndex = 0;
+
+function list() {
+    if (inlet === 0) {
+        var pitch = arguments[0];
+        var velocity = arguments[1];
+        
+        if (velocity > 0) {
+            // Add note
+            if (notes.indexOf(pitch) === -1) {
+                notes.push(pitch);
+                notes.sort(function(a,b) { return a-b; });
+            }
+        } else {
+            // Remove note
+            var idx = notes.indexOf(pitch);
+            if (idx !== -1) notes.splice(idx, 1);
+        }
+    }
+}
+
+function bang() {
+    if (inlet === 1 && notes.length > 0) {
+        outlet(0, [notes[currentIndex], 100]);
+        currentIndex = (currentIndex + 1) % notes.length;
+    }
+}`
+          }
+        ],
+        suggestions: [
+          { text: 'Add rhythm patterns', action: 'enhance' },
+          { text: 'Add direction control', action: 'enhance' }
+        ]
+      },
+      'help': {
+        message: "I can help you with Max for Live development! Here are some things I can do:\n\n• **Explain M4L concepts** - Ask about objects, patching, etc.\n• **Generate JavaScript code** - Describe what you want to create\n• **Debug patches** - Help troubleshoot issues\n• **Show examples** - Get code for common patterns\n• **Suggest objects** - Find the right tool for your needs\n\nTry asking something like:\n- 'How do I receive MIDI notes?'\n- 'Create an arpeggiator'\n- 'How do I control Live parameters?'\n- 'Show me a filter example'",
+        suggestions: [
+          { text: 'Create MIDI effect', action: 'tutorial' },
+          { text: 'Use Live API', action: 'tutorial' },
+          { text: 'Write JavaScript', action: 'tutorial' }
+        ]
+      }
+    };
+
+    // Find matching response
+    for (const [key, response] of Object.entries(m4lResponses)) {
+      if (lastMessage.includes(key)) {
+        return response;
+      }
+    }
+
+    // Default helpful response
+    return m4lResponses.help;
+  }
 }
 
 // Singleton instance

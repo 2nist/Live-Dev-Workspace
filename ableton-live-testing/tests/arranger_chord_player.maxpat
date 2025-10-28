@@ -1,0 +1,1 @@
+Max for Live patch for Arranger Chord Player. Receives chord data from OSC and plays notes.

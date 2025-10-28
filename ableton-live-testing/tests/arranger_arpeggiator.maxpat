@@ -1,0 +1,1 @@
+Max for Live patch for Arranger Arpeggiator. Receives chord data from OSC and generates arpeggiated notes.

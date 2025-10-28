@@ -47,7 +47,6 @@ import {
   IconHeart,
   IconBook,
   IconCode,
-  IconZap,
   IconTarget,
   IconBulb
 } from '@tabler/icons-react';
@@ -711,7 +710,7 @@ const ObjectTemplateBrowser = ({
       case 'midi': return <IconMusic size={16} />;
       case 'live': return <IconDevices size={16} />;
       case 'utility': return <IconSettings size={16} />;
-      default: return <IconZap size={16} />;
+      default: return <IconBolt size={16} />;
     }
   };
 
@@ -896,7 +895,7 @@ const ObjectTemplateBrowser = ({
         {/* Tabs */}
         <Tabs value={activeTab} onChange={setActiveTab} style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
           <Tabs.List px="md">
-            <Tabs.Tab value="objects" leftSection={<IconZap size={16} />}>
+            <Tabs.Tab value="objects" leftSection={<IconBolt size={16} />}>
               Max Objects ({filteredObjects.length})
             </Tabs.Tab>
             <Tabs.Tab value="devices" leftSection={<IconDevices size={16} />}>
