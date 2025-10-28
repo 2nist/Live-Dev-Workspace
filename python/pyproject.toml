@@ -46,6 +46,7 @@ Documentation = "https://github.com/2nist/Live-Dev-Workspace/blob/main/python/RE
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
+pythonpath = ["src"]
 python_files = ["test_*.py"]
 python_classes = ["Test*"]
 python_functions = ["test_*"]

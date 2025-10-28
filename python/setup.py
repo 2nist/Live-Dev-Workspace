@@ -20,6 +20,7 @@ setup(
     install_requires=[
         "pylive>=0.4.0",
         "python-osc>=1.8.0",
+        "pydantic>=2.0.0",
         "python-dotenv>=1.0.0",
         "colorama>=0.4.6",
     ],
@@ -28,6 +29,7 @@ setup(
             "pytest>=7.4.0",
             "pytest-timeout>=2.1.0",
             "pytest-asyncio>=0.21.0",
+            "pytest-cov>=4.1.0",
         ],
         "audio": [
             "mido>=1.3.0",
