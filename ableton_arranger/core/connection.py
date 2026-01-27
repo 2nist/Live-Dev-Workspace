@@ -177,3 +177,20 @@ class LiveConnection:
     def is_connected(self) -> bool:
         """Check if connected to Live."""
         return self.connected
+    
+    def open_live_set(self, file_path: str) -> bool:
+        """
+        Open a Live set file.
+        Note: AbletonOSC doesn't have a direct "open set" command.
+        This would need to be done via Live's file system or manual user action.
+        For now, return True as placeholder.
+        
+        Args:
+            file_path: Path to .als file
+            
+        Returns:
+            True if successful (placeholder)
+        """
+        # TODO: Implement Live set opening via OSC or file system
+        logger.info(f"Would open Live set: {file_path}")
+        return True

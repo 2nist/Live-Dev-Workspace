@@ -15,6 +15,7 @@ class Section:
     timesig_num: int = 4
     timesig_denom: int = 4
     chords: List = field(default_factory=list)  # Will be List[Chord] when chord.py is imported
+    lyrics: Optional[str] = None  # Optional lyrics text for this section
     
     def get_color(self) -> int:
         """Get the color for this section based on its name."""
@@ -55,7 +56,8 @@ class Section:
             "tempo": self.tempo,
             "timesig_num": self.timesig_num,
             "timesig_denom": self.timesig_denom,
-            "chords": [chord.to_dict() if hasattr(chord, 'to_dict') else chord for chord in self.chords]
+            "chords": [chord.to_dict() if hasattr(chord, 'to_dict') else chord for chord in self.chords],
+            "lyrics": self.lyrics
         }
     
     @classmethod
@@ -78,6 +80,7 @@ class Section:
             tempo=data.get("tempo"),
             timesig_num=data.get("timesig_num", 4),
             timesig_denom=data.get("timesig_denom", 4),
-            chords=chords
+            chords=chords,
+            lyrics=data.get("lyrics")
         )
         return section

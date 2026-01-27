@@ -31,36 +31,71 @@ pip install -r requirements.txt
 
 ## Usage
 
+### Basic Application (2-panel)
+
 1. Start Ableton Live with AbletonOSC.amxd loaded
-2. Run the application:
+2. Run the basic application:
 ```bash
 python ableton_arranger/main.py
 ```
 
 3. Use the interface:
    - **Left Panel**: Manage sections (add, delete, edit)
-   - **Right Panel**: Chord editor (coming soon)
-   - **Rebuild Button**: Creates tracks and clips in Ableton Live based on your sections
+   - **Right Panel**: Chord editor with interactive timeline
+   - **Rebuild Button**: Creates tracks and clips in Ableton Live
+
+### Integrated Application (4-panel)
+
+For the complete integrated system with audio analysis and data browser:
+
+```bash
+python ableton_arranger/main_integrated.py
+```
+
+Features:
+   - **Top Left**: Section management
+   - **Bottom Left**: Chord progression editor
+   - **Top Right**: Audio analyzer (MP3 → sections/chords)
+   - **Bottom Right**: Song library and project browser
 
 ## Project Structure
 
 ```
 ableton_arranger/
-├── main.py                 # Entry point
-├── config.py              # Role tracks, presets, constants
-├── requirements.txt       # Dependencies
-├── core/
-│   ├── section.py         # Section dataclass
-│   ├── chord.py           # Chord theory and types
-│   ├── connection.py      # OSC connection to Live
-│   ├── arrangement_builder.py  # Build arrangement
-│   └── persistence.py     # JSON save/load
-├── gui/
-│   ├── main_window.py     # Main window with splitter
-│   ├── section_panel.py   # Section management UI
-│   └── chord_panel.py     # Chord editor (stub)
-└── data/
-    └── sections.json      # Saved sections
+├── main.py                      # Basic 2-panel entry point
+├── main_integrated.py          # Integrated 4-panel entry point
+├── config.py                   # Role tracks, presets, constants
+├── requirements.txt            # Dependencies
+├── core/                       # Core arrangement functionality
+│   ├── section.py             # Section dataclass
+│   ├── chord.py               # Chord theory and types
+│   ├── connection.py          # OSC connection to Live
+│   ├── arrangement_builder.py # Build arrangement
+│   └── persistence.py         # JSON save/load
+├── gui/                        # GUI components
+│   ├── main_window.py         # Basic 2-panel window
+│   ├── integrated_main_window.py  # 4-panel integrated window
+│   ├── section_panel.py       # Section management UI
+│   ├── chord_panel.py         # Chord editor
+│   ├── chord_timeline.py      # Interactive timeline widget
+│   └── analyzer_panel.py      # Audio analyzer panel
+├── analyzer/                   # Audio analysis module
+│   ├── audio_analyzer.py      # Main analyzer coordinator
+│   ├── structure_detector.py  # SONOTELLER.AI + fallback
+│   ├── stem_processor.py      # Stem separation
+│   ├── chord_detector.py      # Chord detection
+│   └── lyrics_transcriber.py  # Whisper transcription
+├── data/                       # Data browser module
+│   ├── models.py              # Data models
+│   ├── database.py           # SQLite database manager
+│   ├── project_manager.py    # Project lifecycle
+│   └── browser_ui.py         # Browser UI components
+├── shared/                      # Shared data models
+│   └── data_models.py        # Inter-module communication
+├── tests/                      # Test suite
+│   └── test_integration.py   # Integration tests
+└── data/                       # Runtime data
+    └── sections.json         # Saved sections
 ```
 
 ## Key Differences from REAPER Version
@@ -75,7 +110,10 @@ ableton_arranger/
 - ✅ Phase 1: Core Infrastructure - Complete
 - ✅ Phase 2: GUI Foundation - Complete
 - ✅ Phase 3: Arrangement Building - Complete
-- ⏳ Phase 4: Chord Editor - Planned
+- ✅ Phase 4: Chord Editor - Complete
+- ✅ Phase 5: Audio Analyzer Integration - Complete
+- ✅ Phase 6: Data Browser Integration - Complete
+- ✅ Phase 7: Integrated 4-Panel Application - Complete
 
 ## Notes
 

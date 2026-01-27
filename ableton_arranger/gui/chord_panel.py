@@ -4,7 +4,7 @@ Right panel of the main window.
 """
 from PyQt5.QtWidgets import (QWidget, QVBoxLayout, QHBoxLayout, QLabel, QComboBox,
                              QSpinBox, QPushButton, QGroupBox, QScrollArea, QFrame,
-                             QSizePolicy)
+                             QSizePolicy, QTextEdit)
 from PyQt5.QtCore import Qt, pyqtSignal
 from typing import Optional, List
 from ableton_arranger.core.section import Section
@@ -244,6 +244,22 @@ class ChordPanel(QWidget):
         self.progression_label.setWordWrap(True)
         layout.addWidget(self.progression_label)
         
+        # Lyrics editor
+        lyrics_group = QGroupBox("Lyrics (Optional)")
+        lyrics_layout = QVBoxLayout()
+        lyrics_label = QLabel("Enter lyrics for this section:")
+        lyrics_label.setStyleSheet("font-size: 11px; color: #888;")
+        lyrics_layout.addWidget(lyrics_label)
+        
+        self.lyrics_text = QTextEdit()
+        self.lyrics_text.setMaximumHeight(80)
+        self.lyrics_text.setPlaceholderText("Enter lyrics here...")
+        self.lyrics_text.textChanged.connect(self.on_lyrics_changed)
+        lyrics_layout.addWidget(self.lyrics_text)
+        
+        lyrics_group.setLayout(lyrics_layout)
+        layout.addWidget(lyrics_group)
+        
         # Action buttons
         actions_layout = QHBoxLayout()
         
@@ -286,6 +302,11 @@ class ChordPanel(QWidget):
             self.selected_chord_idx = None
             self.update_chord_editor()
             self.update_progression_display()
+            
+            # Load lyrics
+            self.lyrics_text.blockSignals(True)
+            self.lyrics_text.setPlainText(section.lyrics or "")
+            self.lyrics_text.blockSignals(False)
         else:
             self.section_label.setText("Select a section to edit chords")
             self.section_info_label.setText("")
@@ -294,6 +315,9 @@ class ChordPanel(QWidget):
             self.selected_chord_idx = None
             self.chord_editor_group.setVisible(False)
             self.progression_label.setText("Progression: (empty)")
+            self.lyrics_text.blockSignals(True)
+            self.lyrics_text.setPlainText("")
+            self.lyrics_text.blockSignals(False)
     
     def update_diatonic_palette(self):
         """Update the diatonic chord palette buttons."""
