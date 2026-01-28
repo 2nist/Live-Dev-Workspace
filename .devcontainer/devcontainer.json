@@ -1,6 +1,6 @@
 {
-  "name": "ALSE - Ableton Live Software Environment",
-  "description": "Complete development environment for Ableton Live integration with Max Live IDE",
+  "name": "Max Live IDE - iPad Development",
+  "description": "iPad-optimized development environment for Max Live IDE with touch-friendly interface and mobile debugging",
   "image": "mcr.microsoft.com/vscode/devcontainers/typescript-node:18",
   
   "features": {
@@ -19,7 +19,10 @@
   "containerEnv": {
     "NODE_ENV": "development",
     "PYTHONPATH": "/workspaces/ALSE",
-    "LATE_DEBUG": "1"
+    "LATE_DEBUG": "1",
+    "IPAD_DEV": "true",
+    "MOBILE_DEBUG": "true",
+    "TOUCH_INTERFACE": "enabled"
   },
   
   "forwardPorts": [3000, 9001, 9877, 5000],
@@ -35,7 +38,7 @@
       "label": "WebSocket API (Live Communication)",
       "onAutoForward": "silent", 
       "visibility": "public",
-      "protocol": "wss"
+      "protocol": "https"
     },
     "9877": {
       "label": "HTTP API (Commands & Queries)",
@@ -66,12 +69,15 @@
         "formulahendry.auto-rename-tag",
         "esbenp.prettier-vscode",
         "ms-vscode.vscode-json",
-        "redhat.vscode-yaml"
+        "redhat.vscode-yaml",
+        "ms-vscode.remote-explorer",
+        "ms-vscode-remote.remote-containers",
+        "ms-vscode.simple-browser",
+        "WallabyJs.console-ninja"
       ],
       "settings": {
         "terminal.integrated.defaultProfile.linux": "bash",
         "editor.formatOnSave": true,
-        "editor.defaultFormatter": "esbenp.prettier-vscode",
         "python.defaultInterpreterPath": "/usr/local/bin/python",
         "python.formatting.provider": "black",
         "python.linting.enabled": true,
@@ -88,7 +94,17 @@
         "editor.minimap.enabled": true,
         "explorer.confirmDelete": false,
         "git.autofetch": true,
-        "git.enableSmartCommit": true
+        "git.enableSmartCommit": true,
+        "workbench.panel.defaultLocation": "bottom",
+        "workbench.editor.showTabs": "multiple",
+        "editor.tabSize": 2,
+        "editor.insertSpaces": true,
+        "workbench.activityBar.visible": true,
+        "workbench.statusBar.visible": true,
+        "terminal.integrated.fontFamily": "monospace",
+        "editor.renderWhitespace": "selection",
+        "editor.lineNumbers": "on",
+        "workbench.sideBar.location": "left"
       }
     }
   },
