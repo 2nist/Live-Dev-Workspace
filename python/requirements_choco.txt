@@ -1,0 +1,11 @@
+# Requirements for ChoCo Integration
+
+# Core dependencies
+jams>=0.3.0
+music21>=8.0.0
+
+# Optional but recommended for better performance
+rapidfuzz>=2.0.0
+
+# For Ableton Live integration (if using live_dev)
+# pythonosc>=1.8.0
