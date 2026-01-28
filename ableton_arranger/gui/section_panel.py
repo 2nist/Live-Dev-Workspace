@@ -8,7 +8,16 @@ from PyQt5.QtWidgets import (QWidget, QVBoxLayout, QHBoxLayout, QTableWidget,
 from PyQt5.QtCore import Qt, pyqtSignal
 from PyQt5.QtGui import QColor
 from typing import List, Optional
-from ableton_arranger.core.section import Section
+# SectionAdapter provides same interface as legacy Section
+import sys
+import os
+workspace_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
+python_src = os.path.join(workspace_root, "python", "src")
+if python_src not in sys.path:
+    sys.path.insert(0, python_src)
+
+from arranger.utils.adapters import SectionAdapter
+Section = SectionAdapter  # Alias for compatibility
 import ableton_arranger.config as config
 
 

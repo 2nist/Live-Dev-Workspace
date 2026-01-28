@@ -22,9 +22,32 @@ COMMON_PROGRESSIONS = {
         ["i", "ii°", "V", "i"],
     ],
     "modal": {
-        "dorian": [["i", "IV", "v"], ["i", "bVII", "IV", "i"]],
-        "mixolydian": [["I", "bVII", "IV"], ["I", "IV", "bVII", "I"]],
-        # ...other modes
+        "dorian": [
+            ["i", "IV", "v"],
+            ["i", "bVII", "IV", "i"],
+            ["i", "ii", "bVII", "i"],
+        ],
+        "mixolydian": [
+            ["I", "bVII", "IV"],
+            ["I", "IV", "bVII", "I"],
+            ["I", "v", "bVII", "IV"],
+        ],
+        "phrygian": [
+            ["i", "bII", "bIII", "iv"],
+            ["i", "bVII", "i"],
+        ],
+        "lydian": [
+            ["I", "II", "V"],
+            ["I", "V", "ii", "I"],
+        ],
+        "locrian": [
+            ["i°", "bII", "bvii"],
+        ],
+        "aeolian": [
+            ["i", "iv", "v"],
+            ["i", "bVI", "bVII", "i"],
+            ["i", "bIII", "bVII", "i"],
+        ],
     },
 }
 
@@ -58,7 +81,10 @@ DIATONIC_DEGREES = {
 MODAL_DEGREES = {
     "dorian": ["i", "ii", "bIII", "IV", "v", "vi°", "bVII"],
     "mixolydian": ["I", "ii", "iii°", "IV", "v", "vi", "bVII"],
-    # ...other modes
+    "phrygian": ["i", "bII", "bIII", "iv", "v°", "bVI", "bvii"],
+    "lydian": ["I", "II", "iii", "#iv°", "V", "vi", "vii"],
+    "locrian": ["i°", "bII", "biii", "iv", "bV", "bVI", "bvii"],
+    "aeolian": ["i", "ii°", "bIII", "iv", "v", "bVI", "bVII"],  # Natural minor
 }
 
 # --- Utility Functions ---
