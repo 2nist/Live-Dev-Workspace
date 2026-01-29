@@ -2,7 +2,7 @@
 Browser UI components for the Data Browser module.
 Provides song library, project browser, and search interface.
 """
-import os
+from pathlib import Path
 from typing import List, Optional, Dict, Any
 from PyQt5.QtWidgets import (
     QWidget, QVBoxLayout, QHBoxLayout, QGridLayout,
@@ -23,6 +23,7 @@ from ableton_arranger.data.models import (
 from ableton_arranger.data.database import DatabaseManager
 from ableton_arranger.data.project_manager import ProjectManager
 from ableton_arranger.shared.data_models import AnalysisData
+from ableton_arranger.data.metadata_api import list_songs, count_songs, list_datasets
 
 
 class SongBrowserWidget(QWidget):
@@ -643,6 +644,177 @@ class ProjectBrowserWidget(QWidget):
                 self.project_opened.emit(project_id)
 
 
+class MetadataBrowserWidget(QWidget):
+    project_requested = pyqtSignal(str)
+
+    KEY_OPTIONS = ["Any key", "C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B", "unknown"]
+    MODE_OPTIONS = ["Any mode", "major", "minor", "unknown"]
+    CADENCE_OPTIONS = ["Any cadence", "standard", "V-I", "unknown"]
+
+    def __init__(self, parent=None):
+        super().__init__(parent)
+        self.limit = 50
+        self.offset = 0
+        self.init_ui()
+        self.refresh()
+
+    def init_ui(self):
+        layout = QVBoxLayout()
+
+        search_row = QHBoxLayout()
+        self.search_input = QLineEdit()
+        self.search_input.setPlaceholderText("Search songs/artists...")
+        self.search_input.textChanged.connect(self.on_filter_changed)
+        search_row.addWidget(self.search_input)
+
+        self.chord_search = QLineEdit()
+        self.chord_search.setPlaceholderText("Chord filter (Asus4, Vmaj7)...")
+        self.chord_search.textChanged.connect(self.on_filter_changed)
+        search_row.addWidget(self.chord_search)
+
+        layout.addLayout(search_row)
+
+        dataset_row = QHBoxLayout()
+        self.dataset_filter = QComboBox()
+        self.dataset_filter.addItem("All datasets")
+        for dataset in sorted(list_datasets()):
+            if dataset:
+                self.dataset_filter.addItem(dataset)
+        self.dataset_filter.currentTextChanged.connect(self.on_filter_changed)
+        dataset_row.addWidget(self.dataset_filter)
+
+        self.key_filter = QComboBox()
+        self.key_filter.addItems(self.KEY_OPTIONS)
+        self.key_filter.currentTextChanged.connect(self.on_filter_changed)
+        dataset_row.addWidget(QLabel("Key"))
+        dataset_row.addWidget(self.key_filter)
+
+        self.mode_filter = QComboBox()
+        self.mode_filter.addItems(self.MODE_OPTIONS)
+        self.mode_filter.currentTextChanged.connect(self.on_filter_changed)
+        dataset_row.addWidget(QLabel("Mode"))
+        dataset_row.addWidget(self.mode_filter)
+
+        self.cadence_filter = QComboBox()
+        self.cadence_filter.addItems(self.CADENCE_OPTIONS)
+        self.cadence_filter.currentTextChanged.connect(self.on_filter_changed)
+        dataset_row.addWidget(QLabel("Cadence"))
+        dataset_row.addWidget(self.cadence_filter)
+
+        layout.addLayout(dataset_row)
+
+        tempo_row = QHBoxLayout()
+        tempo_row.addWidget(QLabel("Tempo"))
+        self.tempo_min = QSpinBox()
+        self.tempo_min.setRange(40, 250)
+        self.tempo_min.setValue(60)
+        self.tempo_min.valueChanged.connect(self.on_filter_changed)
+        tempo_row.addWidget(self.tempo_min)
+        tempo_row.addWidget(QLabel("-"))
+        self.tempo_max = QSpinBox()
+        self.tempo_max.setRange(40, 250)
+        self.tempo_max.setValue(220)
+        self.tempo_max.valueChanged.connect(self.on_filter_changed)
+        tempo_row.addWidget(self.tempo_max)
+
+        self.metadata_only = QCheckBox("Has metadata")
+        self.metadata_only.setChecked(False)
+        self.metadata_only.stateChanged.connect(self.on_filter_changed)
+        tempo_row.addWidget(self.metadata_only)
+
+        layout.addLayout(tempo_row)
+
+        self.table = QTableWidget()
+        self.table.setColumnCount(10)
+        self.table.setHorizontalHeaderLabels([
+            "ID", "Title", "Artist", "Dataset", "Tempo", "Key", "Mode", "Cadence", "Sections", "Chords"
+        ])
+        self.table.setSelectionBehavior(QAbstractItemView.SelectRows)
+        self.table.setEditTriggers(QAbstractItemView.NoEditTriggers)
+        self.table.horizontalHeader().setStretchLastSection(True)
+        self.table.itemDoubleClicked.connect(self.on_double_click)
+        layout.addWidget(self.table)
+
+        bottom = QHBoxLayout()
+        self.load_btn = QPushButton("Load Arrangement")
+        self.load_btn.clicked.connect(self.load_selected)
+        bottom.addWidget(self.load_btn)
+        bottom.addStretch()
+        layout.addLayout(bottom)
+
+        self.setLayout(layout)
+
+    def on_filter_changed(self):
+        self.offset = 0
+        self.refresh()
+
+    def get_filters(self):
+        filters = {
+            "term": self.search_input.text().strip(),
+            "min_tempo": self.tempo_min.value(),
+            "max_tempo": self.tempo_max.value(),
+        }
+        dataset = self.dataset_filter.currentText()
+        if dataset != "All datasets":
+            filters["dataset"] = dataset
+        key = self.key_filter.currentText()
+        if key and key != "Any key":
+            filters["key"] = key
+        mode = self.mode_filter.currentText()
+        if mode and mode != "Any mode":
+            filters["mode"] = mode
+        cadence = self.cadence_filter.currentText()
+        if cadence and cadence != "Any cadence":
+            filters["cadence"] = cadence
+        chord_term = self.chord_search.text().strip()
+        if chord_term:
+            filters["chord"] = chord_term
+        if self.metadata_only.isChecked():
+            filters["has_metadata"] = True
+        return filters
+
+    def refresh(self):
+        filters = self.get_filters()
+        entries = list_songs(filters, limit=self.limit, offset=self.offset)
+        self.table.setRowCount(len(entries))
+        workspace_root = Path(__file__).resolve().parents[2]
+        projects_dir = workspace_root / "ableton_projects"
+
+        for row, entry in enumerate(entries):
+            self.table.setItem(row, 0, QTableWidgetItem(str(entry["id"])))
+            self.table.setItem(row, 1, QTableWidgetItem(entry["title"] or "—"))
+            self.table.setItem(row, 2, QTableWidgetItem(entry["artist"] or "Unknown"))
+            self.table.setItem(row, 3, QTableWidgetItem(entry["dataset"]))
+            tempo = entry["tempo"] or ""
+            self.table.setItem(row, 4, QTableWidgetItem(f"{tempo:.1f}" if tempo else "—"))
+            metadata = entry.get("metadata") or {}
+            key_value = metadata.get("key", "—")
+            mode_value = metadata.get("mode", "—")
+            cadence_value = metadata.get("cadence", "—")
+            self.table.setItem(row, 5, QTableWidgetItem(key_value))
+            self.table.setItem(row, 6, QTableWidgetItem(mode_value))
+            self.table.setItem(row, 7, QTableWidgetItem(cadence_value))
+            self.table.setItem(row, 8, QTableWidgetItem(str(entry["sections_count"])))
+            self.table.setItem(row, 9, QTableWidgetItem(str(entry["chords_count"])))
+            project_item = self.table.item(row, 0)
+            project_item.setData(Qt.UserRole, str(projects_dir / entry["project_file"]))
+
+    def on_double_click(self, item: QTableWidgetItem):
+        self.emit_selected()
+
+    def load_selected(self):
+        self.emit_selected()
+
+    def emit_selected(self):
+        row = self.table.currentRow()
+        if row < 0:
+            return
+        project_item = self.table.item(row, 0)
+        path = project_item.data(Qt.UserRole)
+        if path:
+            self.project_requested.emit(str(path))
+
+
 class DataBrowserMainWidget(QTabWidget):
     """
     Main data browser interface combining songs and projects.
@@ -651,6 +823,7 @@ class DataBrowserMainWidget(QTabWidget):
     
     song_selected = pyqtSignal(str)
     project_selected = pyqtSignal(str)
+    metadata_project_requested = pyqtSignal(str)
     analyze_requested = pyqtSignal(str)
     
     def __init__(self, database: DatabaseManager, project_manager: ProjectManager, parent=None):
@@ -672,6 +845,11 @@ class DataBrowserMainWidget(QTabWidget):
         self.project_browser = ProjectBrowserWidget(self.project_manager)
         self.project_browser.project_selected.connect(self.project_selected)
         self.addTab(self.project_browser, "Projects")
+
+        # Metadata catalog tab
+        self.metadata_browser = MetadataBrowserWidget()
+        self.metadata_browser.project_requested.connect(self.metadata_project_requested)
+        self.addTab(self.metadata_browser, "Catalog")
     
     def refresh_data(self):
         """Refresh all browser data."""
@@ -696,6 +874,7 @@ def create_data_browser_panel(database: DatabaseManager, project_manager: Projec
     # Connect signals for integration
     browser.song_selected.connect(lambda song_id: print(f"Song selected: {song_id}"))
     browser.project_selected.connect(lambda project_id: print(f"Project selected: {project_id}"))
+    browser.metadata_project_requested.connect(lambda path: print(f"Metadata project: {path}"))
     browser.analyze_requested.connect(lambda song_id: print(f"Analysis requested: {song_id}"))
     
     return browser

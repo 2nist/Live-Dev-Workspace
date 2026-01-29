@@ -1,3 +1,4 @@
+library/datasets/
 # Node modules
 node_modules/
 npm-debug.log*
@@ -67,3 +68,8 @@ Thumbs.db
 
 # Large PDF documentation files (extract key content to .md files instead)
 DOCS/*.pdf
+
+# Music datasets library (250,000+ files, ~6.5 GB)
+# Contains large datasets: ChoCo, POP909, BiMMuDa, CoCoPops, etc.
+# These are too large for git tracking - keep local only
+library/

@@ -4,6 +4,7 @@ Sections | Chords | Analyzer | Data Browser
 
 This is the complete integrated application combining all modules.
 """
+import json
 import os
 import sys
 from PyQt5.QtWidgets import (QMainWindow, QWidget, QVBoxLayout, QHBoxLayout,
@@ -138,6 +139,7 @@ class IntegratedMainWindow(QMainWindow):
         self.data_browser = DataBrowserMainWidget(self.database, self.project_manager)
         self.data_browser.analyze_requested.connect(self.on_browser_analyze_requested)
         self.data_browser.song_selected.connect(self.on_song_selected)
+        self.data_browser.metadata_project_requested.connect(self.load_catalog_project)
         right_splitter.addWidget(self.data_browser)
         
         # Set right splitter sizes (analyzer: 300px, browser: rest)
@@ -373,6 +375,31 @@ class IntegratedMainWindow(QMainWindow):
         except Exception as e:
             logger.error(f"Error loading song: {e}")
     
+    def load_catalog_project(self, project_path: str):
+        """Load an Ableton project JSON from the catalog."""
+        try:
+            path = Path(project_path)
+            if not path.exists():
+                QMessageBox.warning(self, "Project Not Found", f"Project file missing:\n{project_path}")
+                return
+            with path.open("r", encoding="utf-8") as fh:
+                project_json = json.load(fh)
+            sections_data = project_json.get("sections", [])
+            if not sections_data:
+                QMessageBox.information(self, "Empty Project", "Selected project has no sections.")
+                return
+            new_sections = [Section.from_dict(sec) for sec in sections_data]
+            self.sections = new_sections
+            self.section_panel.set_sections(new_sections)
+            if new_sections:
+                self.section_panel.selected_index = 0
+                self.section_panel.table.selectRow(0)
+                self.on_section_selected(0)
+            self.status_bar.showMessage(f"Loaded {len(new_sections)} sections from catalog", 5000)
+        except Exception as e:
+            logger.error(f"Failed to load catalog project: {e}")
+            QMessageBox.critical(self, "Load Error", f"Failed to load project:\n{e}")
+
     def save_sections(self):
         """Save sections to file."""
         try:
